@@ -1,0 +1,34 @@
+Name: admin-api
+#Host: 0.0.0.0
+Host: 127.0.0.1
+Port: 8888
+
+Timeout: 30000 # 30s，api请求的响应超时时间，若超过10s还未返回则结束请求。该超时时间会被api层初始化的的context作为超时时间进行设置，若再新建一个context则不会被使用，而使用默认或自定义的超时时间
+
+#系统
+SysRpc:
+  Etcd:
+    Hosts:
+#      - 192.168.0.100:2379
+#      - 10.10.11.29:2379
+      - 127.0.0.1:2379
+    Key: sys.rpc
+    Timeout: 30000  # 10s，设置rpc的超时时间，该超时时间会被拦截器TimeoutInterceptor作为api层传入context的父context的超时时间进行设置，若父context或子context（api层传入context）超时时间结束，请求会被直接终止。
+
+Auth:
+  AccessSecret: ad879037-c7a4-4063-9236-6bfc35d54b7d
+  AccessExpire: 86400
+
+#Prometheus:
+#  Host: 127.0.0.1
+#  Port: 8188
+#  Path: /metrics
+
+#Redis:
+#  Address: 127.0.0.1:6379
+#  Pass:
+
+CacheRedis:
+  - Host: 127.0.0.1:6379
+    Pass:
+    Type: node

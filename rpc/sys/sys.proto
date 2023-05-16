@@ -1,0 +1,142 @@
+syntax = "proto3";
+
+package sys;
+option go_package="./sys";
+
+//user start---------------------
+message LoginReq {
+  string user_name = 1;
+  string password = 2;
+}
+
+message loginResp {
+  string status = 1;
+  string currentAuthority = 2;
+  int64 id = 3;
+  string userName = 4;
+  string AccessToken = 5;
+  int64 AccessExpire = 6;
+  int64 RefreshAfter = 7;
+}
+
+message InfoReq {
+  int64 UserId = 1;
+}
+
+message InfoResp {
+  string avatar = 1;
+  string name = 2;
+//  repeated MenuListTree menuListTree=3;
+//  repeated string BackgroundUrls =4;
+}
+
+message UserAddReq {
+  string email = 1;
+  string mobile = 2;
+  string name = 3;
+  string nick_name = 4;
+  string avatar = 5;
+  int64 dept_id = 6;
+  string create_by = 7;
+  int64 role_id = 8;
+  int64 job_id = 9;
+}
+
+message UserAddResp {
+  string pong = 1;
+}
+//user end---------------------
+
+//menu start---------------------
+message MenuAddReq {
+  string name = 1;
+  int64 parent_id = 2;
+  string path = 3;
+  string perms = 4;
+  int64 type = 5;
+  string icon = 6;
+  int64 order_num = 7;
+  string create_by = 8;
+}
+
+message MenuAddResp {
+  string pong = 1;
+}
+
+message MenuListReq {
+  string name = 1;
+  string path = 2;
+}
+
+message MenuListData {
+  int64 id = 1;
+  string name = 2;
+  int64 parent_id = 3;
+  string path = 4;
+  string perms = 5;
+  int64 type = 6;
+  string icon = 7;
+  int64 order_num = 8;
+  string create_by = 9;
+  string create_time = 10;
+  string last_update_by = 11;
+  string last_update_time = 12;
+  int64 del_flag = 13;
+}
+
+message MenuListTree {
+  int64 id = 1;
+  string name = 2;
+  string icon = 3;
+  int64 parent_id = 4;
+  string path = 5;
+}
+
+message MenuListResp{
+  int64 total = 1;
+  repeated  MenuListData list = 2;
+}
+message MenuUpdateReq {
+  int64 id = 1;
+  string name = 2;
+  int64 parent_id = 3;
+  string path = 4;
+  string perms = 5;
+  int64 type = 6;
+  string icon = 7;
+  int64 order_num = 8;
+  string last_update_by = 9;
+}
+
+message MenuUpdateResp {
+  string pong = 1;
+}
+
+message MenuDeleteReq {
+  int64 id = 1;
+}
+
+message MenuDeleteResp {
+  string pong = 1;
+}
+
+message UpdateMenuRoleReq {
+  int64 roleId = 1;
+  repeated int64 menuIds = 2;
+}
+
+message UpdateMenuRoleResp {
+  string pong = 1;
+}
+//menu end---------------------
+
+service Sys {
+  rpc UserLogin(LoginReq) returns(loginResp);
+  rpc UserInfo(InfoReq) returns(InfoResp);
+  rpc UserAdd(UserAddReq) returns(UserAddResp);
+
+  rpc MenuAdd(MenuAddReq) returns(MenuAddResp);
+  rpc MenuList(MenuListReq) returns(MenuListResp);
+  rpc MenuUpdate(MenuUpdateReq) returns(MenuUpdateResp);
+  rpc MenuDelete(MenuDeleteReq) returns(MenuDeleteResp);
+}

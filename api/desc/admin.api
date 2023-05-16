@@ -1,0 +1,8 @@
+import "sys/user.api"
+import "sys/menu.api"
+
+info(
+	desc: "go zero admin"
+	author: "yunpeng.feng"
+	email: "yunpeng@mycredigo.com"
+)
