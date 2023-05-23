@@ -1,3 +1,0 @@
-{"@timestamp":"2023-05-01T21:59:38.245+08:00","caller":"internal/rpclogger.go:30","content":"[transport]Client received GoAway with error code ENHANCE_YOUR_CALM and debug data equal to ASCII \"too_many_pings\".","level":"error"}
-{"@timestamp":"2023-05-03T21:54:17.232+08:00","caller":"internal/rpclogger.go:30","content":"[transport]Client received GoAway with error code ENHANCE_YOUR_CALM and debug data equal to ASCII \"too_many_pings\".","level":"error"}
-{"@timestamp":"2023-05-03T22:09:37.221+08:00","caller":"internal/rpclogger.go:30","content":"[transport]Client received GoAway with error code ENHANCE_YOUR_CALM and debug data equal to ASCII \"too_many_pings\".","level":"error"}

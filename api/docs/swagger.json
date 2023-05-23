@@ -1,0 +1,513 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a sample server celler server.",
+        "title": "Swagger Example API",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "API Support",
+            "url": "http://www.swagger.io/support",
+            "email": "support@swagger.io"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "basePath": "/_",
+    "paths": {
+        "/api/sys/menu/list": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "menu list",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pure"
+                ],
+                "summary": "menu list logic",
+                "operationId": "MenuList",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "List Menu",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "List Menu",
+                        "name": "path",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.ListMenuResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/sys/user/currentUser": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "user info",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pure"
+                ],
+                "summary": "user info logic",
+                "operationId": "UserInfo",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "userId",
+                        "name": "userId",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.UserInfoResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/sys/user/list": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "user list",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pure"
+                ],
+                "summary": "user list logic",
+                "operationId": "UserList",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "List User",
+                        "name": "current",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "List User",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "List User",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "List User",
+                        "name": "nickName",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "List User",
+                        "name": "mobile",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "List User",
+                        "name": "email",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "List User",
+                        "name": "status",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.ListUserResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/sys/user/login": {
+            "post": {
+                "description": "user login",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pure"
+                ],
+                "summary": "user login logic",
+                "operationId": "UserLogin",
+                "parameters": [
+                    {
+                        "description": "Login info",
+                        "name": "userLogin",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.UserLoginReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.UserLoginResp"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "types.ListMenuData": {
+            "type": "object",
+            "required": [
+                "createBy",
+                "createTime",
+                "delFlag",
+                "icon",
+                "id",
+                "lastUpdateBy",
+                "lastUpdateTime",
+                "name",
+                "orderNum",
+                "parentId",
+                "path",
+                "perms",
+                "type"
+            ],
+            "properties": {
+                "createBy": {
+                    "description": "创建人",
+                    "type": "string"
+                },
+                "createTime": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "delFlag": {
+                    "description": "是否删除  -1：已删除  0：正常",
+                    "type": "integer"
+                },
+                "icon": {
+                    "description": "菜单图标",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "编号",
+                    "type": "integer"
+                },
+                "lastUpdateBy": {
+                    "description": "更新人",
+                    "type": "string"
+                },
+                "lastUpdateTime": {
+                    "description": "更新时间",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "菜单名称",
+                    "type": "string"
+                },
+                "orderNum": {
+                    "description": "排序",
+                    "type": "integer"
+                },
+                "parentId": {
+                    "description": "父菜单ID，一级菜单为0",
+                    "type": "integer"
+                },
+                "path": {
+                    "description": "菜单Path,类型：1.普通页面（如用户管理， /sysmodel/user） 2.嵌套完整外部页面，以http(s)开头的链接 3.嵌套服务器页面，使用iframe:前缀+目标URL(如SQL监控， iframe:/druid/login.html, iframe:前缀会替换成服务器地址)",
+                    "type": "string"
+                },
+                "perms": {
+                    "description": "授权(多个用逗号分隔，如：sysmodel:user:add,sysmodel:user:edit)",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "类型   0：目录   1：菜单   2：按钮",
+                    "type": "integer"
+                }
+            }
+        },
+        "types.ListMenuResp": {
+            "type": "object",
+            "required": [
+                "code",
+                "data",
+                "message",
+                "success",
+                "total"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/types.ListMenuData"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "types.ListUserData": {
+            "type": "object",
+            "required": [
+                "avatar",
+                "createBy",
+                "createTime",
+                "delFlag",
+                "email",
+                "id",
+                "lastUpdateBy",
+                "lastUpdateTime",
+                "mobile",
+                "name",
+                "nickName",
+                "password",
+                "salt",
+                "status"
+            ],
+            "properties": {
+                "avatar": {
+                    "description": "头像",
+                    "type": "string"
+                },
+                "createBy": {
+                    "description": "创建人",
+                    "type": "string"
+                },
+                "createTime": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "delFlag": {
+                    "description": "是否删除  -1：已删除  0：正常",
+                    "type": "integer"
+                },
+                "email": {
+                    "description": "邮箱",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "编号",
+                    "type": "integer"
+                },
+                "lastUpdateBy": {
+                    "description": "更新人",
+                    "type": "string"
+                },
+                "lastUpdateTime": {
+                    "description": "更新时间",
+                    "type": "string"
+                },
+                "mobile": {
+                    "description": "手机号",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "用户名",
+                    "type": "string"
+                },
+                "nickName": {
+                    "description": "昵称",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "密码",
+                    "type": "string"
+                },
+                "salt": {
+                    "description": "加密盐",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "状态  0：禁用   1：正常",
+                    "type": "integer"
+                }
+            }
+        },
+        "types.ListUserResp": {
+            "type": "object",
+            "required": [
+                "code",
+                "current",
+                "data",
+                "message",
+                "pageSize",
+                "success",
+                "total"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "current": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/types.ListUserData"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "pageSize": {
+                    "type": "integer"
+                },
+                "success": {
+                    "type": "boolean"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "types.UserInfoResp": {
+            "type": "object",
+            "required": [
+                "avatar",
+                "code",
+                "message",
+                "name"
+            ],
+            "properties": {
+                "avatar": {
+                    "type": "string"
+                },
+                "code": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "types.UserLoginReq": {
+            "type": "object",
+            "required": [
+                "password",
+                "userName"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "userName": {
+                    "type": "string"
+                }
+            }
+        },
+        "types.UserLoginResp": {
+            "type": "object",
+            "required": [
+                "accessExpire",
+                "currentAuthority",
+                "id",
+                "refreshAfter",
+                "status",
+                "token",
+                "userName"
+            ],
+            "properties": {
+                "accessExpire": {
+                    "type": "integer"
+                },
+                "currentAuthority": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "refreshAfter": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "token": {
+                    "type": "string"
+                },
+                "userName": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    },
+    "externalDocs": {
+        "description": "OpenAPI",
+        "url": "https://swagger.io/resources/open-api/"
+    }
+}
