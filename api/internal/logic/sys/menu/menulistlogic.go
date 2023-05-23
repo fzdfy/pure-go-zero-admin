@@ -33,8 +33,8 @@ func NewMenuListLogic(ctx context.Context, svcCtx *svc.ServiceContext) MenuListL
 //	@Security		ApiKeyAuth
 //	@Accept			json
 //	@Produce		json
-//	@Param			Name	query		string	false	"List Menu"
-//	@Param			Path	query		string	false	"List Menu"
+//	@Param			name	query		string	false	"List Menu"
+//	@Param			path	query		string	false	"List Menu"
 //	@Success		200		{object}	types.ListMenuResp
 //	@Router			/api/sys/menu/list [get]
 func (l *MenuListLogic) MenuList(req types.ListMenuReq) (*types.ListMenuResp, error) {

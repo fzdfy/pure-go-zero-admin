@@ -4,26 +4,26 @@ package sys;
 option go_package="./sys";
 
 //user start---------------------
-message LoginReq {
+message UserLoginReq {
   string user_name = 1;
   string password = 2;
 }
 
-message loginResp {
+message UserLoginResp {
   string status = 1;
-  string currentAuthority = 2;
+  string current_authority = 2;
   int64 id = 3;
-  string userName = 4;
-  string AccessToken = 5;
-  int64 AccessExpire = 6;
-  int64 RefreshAfter = 7;
+  string user_name = 4;
+  string access_token = 5;
+  int64 access_expire = 6;
+  int64 refresh_after = 7;
 }
 
-message InfoReq {
-  int64 UserId = 1;
+message UserInfoReq {
+  int64 userId = 1;
 }
 
-message InfoResp {
+message UserInfoResp {
   string avatar = 1;
   string name = 2;
 //  repeated MenuListTree menuListTree=3;
@@ -44,6 +44,38 @@ message UserAddReq {
 
 message UserAddResp {
   string pong = 1;
+}
+
+message UserListReq {
+  int64 current = 1;
+  int64 pageSize = 2;
+  string name = 3;
+  string nick_name = 4;
+  string mobile = 5;
+  string email = 6;
+  int64 status = 7;
+}
+
+message UserListData{
+  int64 id = 1;
+  string name = 2;
+  string nick_name = 3;
+  string avatar = 4;
+  string password = 5;
+  string salt = 6;
+  string email = 7;
+  string mobile = 8;
+  int64 status = 9;
+  string create_by = 10;
+  string create_time = 11;
+  string last_update_by = 12;
+  string last_update_time = 13;
+  int64 del_flag = 14;
+}
+
+message UserListResp {
+  int64 total = 1;
+  repeated UserListData list = 2;
 }
 //user end---------------------
 
@@ -96,6 +128,7 @@ message MenuListResp{
   int64 total = 1;
   repeated  MenuListData list = 2;
 }
+
 message MenuUpdateReq {
   int64 id = 1;
   string name = 2;
@@ -131,9 +164,10 @@ message UpdateMenuRoleResp {
 //menu end---------------------
 
 service Sys {
-  rpc UserLogin(LoginReq) returns(loginResp);
-  rpc UserInfo(InfoReq) returns(InfoResp);
+  rpc UserLogin(UserLoginReq) returns(UserLoginResp);
+  rpc UserInfo(UserInfoReq) returns(UserInfoResp);
   rpc UserAdd(UserAddReq) returns(UserAddResp);
+  rpc UserList(UserListReq) returns(UserListResp);
 
   rpc MenuAdd(MenuAddReq) returns(MenuAddResp);
   rpc MenuList(MenuListReq) returns(MenuListResp);

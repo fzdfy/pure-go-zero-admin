@@ -12,14 +12,14 @@ import (
 	"time"
 )
 
-type LoginLogic struct {
+type UserLoginLogic struct {
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 	logx.Logger
 }
 
-func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic {
-	return &LoginLogic{
+func NewUserLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserLoginLogic {
+	return &UserLoginLogic{
 		ctx:    ctx,
 		svcCtx: svcCtx,
 		Logger: logx.WithContext(ctx),
@@ -27,7 +27,7 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 }
 
 // 根据用户名和密码登录
-func (l *LoginLogic) Login(in *sys.LoginReq) (*sys.LoginResp, error) {
+func (l *UserLoginLogic) UserLogin(in *sys.UserLoginReq) (*sys.UserLoginResp, error) {
 	logx.WithContext(l.ctx).Info("rpc Login")
 	logx.Info("rpc Login")
 	userInfo, err := l.svcCtx.UserModel.FindOneByName(l.ctx, in.UserName)
@@ -57,7 +57,7 @@ func (l *LoginLogic) Login(in *sys.LoginReq) (*sys.LoginResp, error) {
 		return nil, err
 	}
 
-	resp := &sys.LoginResp{
+	resp := &sys.UserLoginResp{
 		Status:           "ok",
 		CurrentAuthority: "admin",
 		Id:               userInfo.Id,

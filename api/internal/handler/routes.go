@@ -4,15 +4,14 @@ package handler
 import (
 	"net/http"
 
+	sysmenu "pure-go-zero-admin/api/internal/handler/sys/menu"
+	sysuser "pure-go-zero-admin/api/internal/handler/sys/user"
 	"pure-go-zero-admin/api/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
-	sysuser "pure-go-zero-admin/api/internal/handler/sys/user"
-	sysmenu "pure-go-zero-admin/api/internal/handler/sys/menu"
 )
 
 func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
-
 	server.AddRoutes(
 		rest.WithMiddlewares(
 			[]rest.Middleware{serverCtx.CheckUrl},
@@ -21,6 +20,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Method:  http.MethodGet,
 					Path:    "/currentUser",
 					Handler: sysuser.UserInfoHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/list",
+					Handler: sysuser.UserListHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodPost,
@@ -47,26 +51,26 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		rest.WithMiddlewares(
 			[]rest.Middleware{serverCtx.CheckUrl},
 			[]rest.Route{
-				//{
-				//	Method:  http.MethodPost,
-				//	Path:    "/add",
-				//	Handler: sysmenu.MenuAddHandler(serverCtx),
-				//},
+				{
+					Method:  http.MethodPost,
+					Path:    "/add",
+					Handler: sysmenu.MenuAddHandler(serverCtx),
+				},
 				{
 					Method:  http.MethodGet,
 					Path:    "/list",
 					Handler: sysmenu.MenuListHandler(serverCtx),
 				},
-				//{
-				//	Method:  http.MethodPost,
-				//	Path:    "/update",
-				//	Handler: sysmenu.MenuUpdateHandler(serverCtx),
-				//},
-				//{
-				//	Method:  http.MethodPost,
-				//	Path:    "/delete",
-				//	Handler: sysmenu.MenuDeleteHandler(serverCtx),
-				//},
+				{
+					Method:  http.MethodPost,
+					Path:    "/update",
+					Handler: sysmenu.MenuUpdateHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/delete",
+					Handler: sysmenu.MenuDeleteHandler(serverCtx),
+				},
 			}...,
 		),
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),

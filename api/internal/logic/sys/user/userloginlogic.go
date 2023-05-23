@@ -36,10 +36,10 @@ func NewUserLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) UserLogi
 //	@Tags			pure
 //	@Accept			json
 //	@Produce		json
-//	@Param			body	body		types.LoginReq	true	"Login info"
-//	@Success		200		{object}	types.LoginResp
+//	@Param			userLogin	body	    types.UserLoginReq	 true	"Login info"
+//	@Success		200		{object}	types.UserLoginResp
 //	@Router			/api/sys/user/login [post]
-func (l *UserLoginLogic) UserLogin(req types.LoginReq, ip string) (*types.LoginResp, error) {
+func (l *UserLoginLogic) UserLogin(req types.UserLoginReq, ip string) (*types.UserLoginResp, error) {
 	logx.Info("UserLogin")
 	if len(strings.TrimSpace(req.UserName)) == 0 || len(strings.TrimSpace(req.Password)) == 0 {
 		reqStr, _ := json.Marshal(req)
@@ -47,7 +47,7 @@ func (l *UserLoginLogic) UserLogin(req types.LoginReq, ip string) (*types.LoginR
 		return nil, errorx.NewDefaultError("用户名或密码不能为空")
 	}
 
-	resp, err := l.svcCtx.Sys.UserLogin(l.ctx, &sysclient.LoginReq{
+	resp, err := l.svcCtx.Sys.UserLogin(l.ctx, &sysclient.UserLoginReq{
 		UserName: req.UserName,
 		Password: req.Password,
 	})
@@ -71,7 +71,7 @@ func (l *UserLoginLogic) UserLogin(req types.LoginReq, ip string) (*types.LoginR
 	times := time.Second * time.Duration(l.svcCtx.Config.Auth.AccessExpire)
 	_ = l.svcCtx.Cache.SetWithExpire(cacheKey, resp.AccessToken, times)
 
-	return &types.LoginResp{
+	return &types.UserLoginResp{
 		Status:           resp.Status,
 		CurrentAuthority: resp.CurrentAuthority,
 		Id:               resp.Id,

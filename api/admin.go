@@ -37,8 +37,8 @@ var configFile = flag.String("f", "api/etc/admin-api.yaml", "the config file")
 //	@in							header
 //	@name						Authorization
 
-//	@externalDocs.description	OpenAPI
-//	@externalDocs.url			https://swagger.io/resources/open-api/
+// @externalDocs.description	OpenAPI
+// @externalDocs.url			https://swagger.io/resources/open-api/
 func main() {
 	flag.Parse()
 
@@ -65,7 +65,6 @@ func main() {
 
 	swagConfig := swagx.NewConfig(swagx.WithGeneralInfo("api/admin.go"), swagx.WithOutput("api/docs"), swagx.WithEnv(c.Mode))
 	swagConfig.Makefile()
-	swagx.RegisterHandlers(server, swagConfig)
 	fmt.Printf("swagx.RegisterHandlers \n")
 
 	fmt.Printf("Starting server at %s:%d...\n", c.Host, c.Port)

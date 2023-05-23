@@ -1,18 +1,9 @@
 package swagx
 
 import (
-	"bytes"
-	"fmt"
-	"github.com/zeromicro/go-zero/core/service"
-	"html/template"
-	"io"
-	"net/http"
-	"os"
 	"os/exec"
 
 	"github.com/zeromicro/go-zero/core/logx"
-	"pure-go-zero-admin/api/internal/common/errorx"
-	"pure-go-zero-admin/api/internal/common/result"
 )
 
 // FileConfig config
@@ -44,66 +35,5 @@ func (c *FileConfig) Makefile() {
 
 	if err := cmd.Run(); err != nil {
 		logx.Errorf("create swagger.json err : %s", err)
-	}
-}
-
-// docsJson returns swagger json
-func (c *FileConfig) docsJson() http.HandlerFunc {
-	swaggerFile, err := os.Open(c.output + "/swagger.json")
-	if err != nil {
-		return c.docsErr(err)
-	}
-	defer swaggerFile.Close()
-
-	swaggerByte, err := io.ReadAll(swaggerFile)
-	if err != nil {
-		return c.docsErr(err)
-	}
-
-	return func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json; charset=utf-8")
-		if _, err = w.Write(swaggerByte); err != nil {
-			result.Response(w, r, err)
-		}
-	}
-}
-
-// docs returns swagger html
-func (c *FileConfig) docs() http.HandlerFunc {
-	logx.Info("swagger docs \n")
-	fmt.Printf("swagger docs \n")
-	tmpl := template.Must(template.New("swaggerdoc").Parse(swaggerTemplateV2))
-	buf := bytes.NewBuffer(nil)
-	err := tmpl.Execute(buf, c.swaggerConfig)
-	if err != nil {
-		return c.docsErr(err)
-	}
-
-	uiHTML := buf.Bytes()
-	logx.Infof("swagger env: %s \n", c.env)
-	fmt.Printf("swagger env: %s", c.env)
-	return func(w http.ResponseWriter, r *http.Request) {
-		// permission
-		if c.env == service.ProMode {
-			result.Response(w, r, errorx.NewError(http.StatusForbidden))
-			return
-		}
-
-		w.Header().Set("Content-Type", "text/html; charset=utf-8")
-		if _, err = w.Write(uiHTML); err != nil {
-			result.Response(w, r, err)
-			return
-		}
-
-		w.WriteHeader(http.StatusOK)
-	}
-}
-
-// docs returns swagger error
-func (c *FileConfig) docsErr(err error) http.HandlerFunc {
-	logx.Error(err)
-
-	return func(w http.ResponseWriter, r *http.Request) {
-		result.Response(w, r, errorx.NewError(http.StatusNotFound))
 	}
 }

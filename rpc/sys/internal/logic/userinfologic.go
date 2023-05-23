@@ -25,7 +25,7 @@ func NewUserInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserInfo
 	}
 }
 
-func (l *UserInfoLogic) UserInfo(in *sys.InfoReq) (*sys.InfoResp, error) {
+func (l *UserInfoLogic) UserInfo(in *sys.UserInfoReq) (*sys.UserInfoResp, error) {
 	userInfo, err := l.svcCtx.UserModel.FindOne(l.ctx, in.UserId)
 
 	switch err {
@@ -50,7 +50,7 @@ func (l *UserInfoLogic) UserInfo(in *sys.InfoReq) (*sys.InfoResp, error) {
 	//	logx.WithContext(l.ctx).Infof("普通管理员: %s登录,菜单: %+v", userInfo.Name, list)
 	//}
 
-	return &sys.InfoResp{
+	return &sys.UserInfoResp{
 		Avatar: "https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png",
 		Name:   userInfo.Name,
 		//MenuListTree:   list,

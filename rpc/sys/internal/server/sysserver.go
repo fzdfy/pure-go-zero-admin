@@ -22,12 +22,12 @@ func NewSysServer(svcCtx *svc.ServiceContext) *SysServer {
 	}
 }
 
-func (s *SysServer) UserLogin(ctx context.Context, in *sys.LoginReq) (*sys.LoginResp, error) {
-	l := logic.NewLoginLogic(ctx, s.svcCtx)
-	return l.Login(in)
+func (s *SysServer) UserLogin(ctx context.Context, in *sys.UserLoginReq) (*sys.UserLoginResp, error) {
+	l := logic.NewUserLoginLogic(ctx, s.svcCtx)
+	return l.UserLogin(in)
 }
 
-func (s *SysServer) UserInfo(ctx context.Context, in *sys.InfoReq) (*sys.InfoResp, error) {
+func (s *SysServer) UserInfo(ctx context.Context, in *sys.UserInfoReq) (*sys.UserInfoResp, error) {
 	l := logic.NewUserInfoLogic(ctx, s.svcCtx)
 	return l.UserInfo(in)
 }
@@ -35,6 +35,11 @@ func (s *SysServer) UserInfo(ctx context.Context, in *sys.InfoReq) (*sys.InfoRes
 func (s *SysServer) UserAdd(ctx context.Context, in *sys.UserAddReq) (*sys.UserAddResp, error) {
 	l := logic.NewUserAddLogic(ctx, s.svcCtx)
 	return l.UserAdd(in)
+}
+
+func (s *SysServer) UserList(ctx context.Context, in *sys.UserListReq) (*sys.UserListResp, error) {
+	l := logic.NewUserListLogic(ctx, s.svcCtx)
+	return l.UserList(in)
 }
 
 func (s *SysServer) MenuAdd(ctx context.Context, in *sys.MenuAddReq) (*sys.MenuAddResp, error) {

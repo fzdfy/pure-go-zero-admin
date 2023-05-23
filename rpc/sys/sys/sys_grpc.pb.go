@@ -22,6 +22,7 @@ const (
 	Sys_UserLogin_FullMethodName  = "/sys.Sys/UserLogin"
 	Sys_UserInfo_FullMethodName   = "/sys.Sys/UserInfo"
 	Sys_UserAdd_FullMethodName    = "/sys.Sys/UserAdd"
+	Sys_UserList_FullMethodName   = "/sys.Sys/UserList"
 	Sys_MenuAdd_FullMethodName    = "/sys.Sys/MenuAdd"
 	Sys_MenuList_FullMethodName   = "/sys.Sys/MenuList"
 	Sys_MenuUpdate_FullMethodName = "/sys.Sys/MenuUpdate"
@@ -32,9 +33,10 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type SysClient interface {
-	UserLogin(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*LoginResp, error)
-	UserInfo(ctx context.Context, in *InfoReq, opts ...grpc.CallOption) (*InfoResp, error)
+	UserLogin(ctx context.Context, in *UserLoginReq, opts ...grpc.CallOption) (*UserLoginResp, error)
+	UserInfo(ctx context.Context, in *UserInfoReq, opts ...grpc.CallOption) (*UserInfoResp, error)
 	UserAdd(ctx context.Context, in *UserAddReq, opts ...grpc.CallOption) (*UserAddResp, error)
+	UserList(ctx context.Context, in *UserListReq, opts ...grpc.CallOption) (*UserListResp, error)
 	MenuAdd(ctx context.Context, in *MenuAddReq, opts ...grpc.CallOption) (*MenuAddResp, error)
 	MenuList(ctx context.Context, in *MenuListReq, opts ...grpc.CallOption) (*MenuListResp, error)
 	MenuUpdate(ctx context.Context, in *MenuUpdateReq, opts ...grpc.CallOption) (*MenuUpdateResp, error)
@@ -49,8 +51,8 @@ func NewSysClient(cc grpc.ClientConnInterface) SysClient {
 	return &sysClient{cc}
 }
 
-func (c *sysClient) UserLogin(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*LoginResp, error) {
-	out := new(LoginResp)
+func (c *sysClient) UserLogin(ctx context.Context, in *UserLoginReq, opts ...grpc.CallOption) (*UserLoginResp, error) {
+	out := new(UserLoginResp)
 	err := c.cc.Invoke(ctx, Sys_UserLogin_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -58,8 +60,8 @@ func (c *sysClient) UserLogin(ctx context.Context, in *LoginReq, opts ...grpc.Ca
 	return out, nil
 }
 
-func (c *sysClient) UserInfo(ctx context.Context, in *InfoReq, opts ...grpc.CallOption) (*InfoResp, error) {
-	out := new(InfoResp)
+func (c *sysClient) UserInfo(ctx context.Context, in *UserInfoReq, opts ...grpc.CallOption) (*UserInfoResp, error) {
+	out := new(UserInfoResp)
 	err := c.cc.Invoke(ctx, Sys_UserInfo_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -70,6 +72,15 @@ func (c *sysClient) UserInfo(ctx context.Context, in *InfoReq, opts ...grpc.Call
 func (c *sysClient) UserAdd(ctx context.Context, in *UserAddReq, opts ...grpc.CallOption) (*UserAddResp, error) {
 	out := new(UserAddResp)
 	err := c.cc.Invoke(ctx, Sys_UserAdd_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sysClient) UserList(ctx context.Context, in *UserListReq, opts ...grpc.CallOption) (*UserListResp, error) {
+	out := new(UserListResp)
+	err := c.cc.Invoke(ctx, Sys_UserList_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -116,9 +127,10 @@ func (c *sysClient) MenuDelete(ctx context.Context, in *MenuDeleteReq, opts ...g
 // All implementations must embed UnimplementedSysServer
 // for forward compatibility
 type SysServer interface {
-	UserLogin(context.Context, *LoginReq) (*LoginResp, error)
-	UserInfo(context.Context, *InfoReq) (*InfoResp, error)
+	UserLogin(context.Context, *UserLoginReq) (*UserLoginResp, error)
+	UserInfo(context.Context, *UserInfoReq) (*UserInfoResp, error)
 	UserAdd(context.Context, *UserAddReq) (*UserAddResp, error)
+	UserList(context.Context, *UserListReq) (*UserListResp, error)
 	MenuAdd(context.Context, *MenuAddReq) (*MenuAddResp, error)
 	MenuList(context.Context, *MenuListReq) (*MenuListResp, error)
 	MenuUpdate(context.Context, *MenuUpdateReq) (*MenuUpdateResp, error)
@@ -130,14 +142,17 @@ type SysServer interface {
 type UnimplementedSysServer struct {
 }
 
-func (UnimplementedSysServer) UserLogin(context.Context, *LoginReq) (*LoginResp, error) {
+func (UnimplementedSysServer) UserLogin(context.Context, *UserLoginReq) (*UserLoginResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserLogin not implemented")
 }
-func (UnimplementedSysServer) UserInfo(context.Context, *InfoReq) (*InfoResp, error) {
+func (UnimplementedSysServer) UserInfo(context.Context, *UserInfoReq) (*UserInfoResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserInfo not implemented")
 }
 func (UnimplementedSysServer) UserAdd(context.Context, *UserAddReq) (*UserAddResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserAdd not implemented")
+}
+func (UnimplementedSysServer) UserList(context.Context, *UserListReq) (*UserListResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserList not implemented")
 }
 func (UnimplementedSysServer) MenuAdd(context.Context, *MenuAddReq) (*MenuAddResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MenuAdd not implemented")
@@ -165,7 +180,7 @@ func RegisterSysServer(s grpc.ServiceRegistrar, srv SysServer) {
 }
 
 func _Sys_UserLogin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(LoginReq)
+	in := new(UserLoginReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -177,13 +192,13 @@ func _Sys_UserLogin_Handler(srv interface{}, ctx context.Context, dec func(inter
 		FullMethod: Sys_UserLogin_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SysServer).UserLogin(ctx, req.(*LoginReq))
+		return srv.(SysServer).UserLogin(ctx, req.(*UserLoginReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Sys_UserInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(InfoReq)
+	in := new(UserInfoReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -195,7 +210,7 @@ func _Sys_UserInfo_Handler(srv interface{}, ctx context.Context, dec func(interf
 		FullMethod: Sys_UserInfo_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SysServer).UserInfo(ctx, req.(*InfoReq))
+		return srv.(SysServer).UserInfo(ctx, req.(*UserInfoReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -214,6 +229,24 @@ func _Sys_UserAdd_Handler(srv interface{}, ctx context.Context, dec func(interfa
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(SysServer).UserAdd(ctx, req.(*UserAddReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Sys_UserList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserListReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SysServer).UserList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Sys_UserList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SysServer).UserList(ctx, req.(*UserListReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -308,6 +341,10 @@ var Sys_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UserAdd",
 			Handler:    _Sys_UserAdd_Handler,
+		},
+		{
+			MethodName: "UserList",
+			Handler:    _Sys_UserList_Handler,
 		},
 		{
 			MethodName: "MenuAdd",
