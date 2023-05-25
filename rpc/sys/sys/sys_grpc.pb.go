@@ -24,6 +24,7 @@ const (
 	Sys_UserAdd_FullMethodName    = "/sys.Sys/UserAdd"
 	Sys_UserList_FullMethodName   = "/sys.Sys/UserList"
 	Sys_UserUpdate_FullMethodName = "/sys.Sys/UserUpdate"
+	Sys_UserDelete_FullMethodName = "/sys.Sys/UserDelete"
 	Sys_MenuAdd_FullMethodName    = "/sys.Sys/MenuAdd"
 	Sys_MenuList_FullMethodName   = "/sys.Sys/MenuList"
 	Sys_MenuUpdate_FullMethodName = "/sys.Sys/MenuUpdate"
@@ -39,6 +40,7 @@ type SysClient interface {
 	UserAdd(ctx context.Context, in *UserAddReq, opts ...grpc.CallOption) (*UserAddResp, error)
 	UserList(ctx context.Context, in *UserListReq, opts ...grpc.CallOption) (*UserListResp, error)
 	UserUpdate(ctx context.Context, in *UserUpdateReq, opts ...grpc.CallOption) (*BaseResp, error)
+	UserDelete(ctx context.Context, in *UserDeleteReq, opts ...grpc.CallOption) (*BaseResp, error)
 	MenuAdd(ctx context.Context, in *MenuAddReq, opts ...grpc.CallOption) (*MenuAddResp, error)
 	MenuList(ctx context.Context, in *MenuListReq, opts ...grpc.CallOption) (*MenuListResp, error)
 	MenuUpdate(ctx context.Context, in *MenuUpdateReq, opts ...grpc.CallOption) (*MenuUpdateResp, error)
@@ -98,6 +100,15 @@ func (c *sysClient) UserUpdate(ctx context.Context, in *UserUpdateReq, opts ...g
 	return out, nil
 }
 
+func (c *sysClient) UserDelete(ctx context.Context, in *UserDeleteReq, opts ...grpc.CallOption) (*BaseResp, error) {
+	out := new(BaseResp)
+	err := c.cc.Invoke(ctx, Sys_UserDelete_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *sysClient) MenuAdd(ctx context.Context, in *MenuAddReq, opts ...grpc.CallOption) (*MenuAddResp, error) {
 	out := new(MenuAddResp)
 	err := c.cc.Invoke(ctx, Sys_MenuAdd_FullMethodName, in, out, opts...)
@@ -143,6 +154,7 @@ type SysServer interface {
 	UserAdd(context.Context, *UserAddReq) (*UserAddResp, error)
 	UserList(context.Context, *UserListReq) (*UserListResp, error)
 	UserUpdate(context.Context, *UserUpdateReq) (*BaseResp, error)
+	UserDelete(context.Context, *UserDeleteReq) (*BaseResp, error)
 	MenuAdd(context.Context, *MenuAddReq) (*MenuAddResp, error)
 	MenuList(context.Context, *MenuListReq) (*MenuListResp, error)
 	MenuUpdate(context.Context, *MenuUpdateReq) (*MenuUpdateResp, error)
@@ -168,6 +180,9 @@ func (UnimplementedSysServer) UserList(context.Context, *UserListReq) (*UserList
 }
 func (UnimplementedSysServer) UserUpdate(context.Context, *UserUpdateReq) (*BaseResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserUpdate not implemented")
+}
+func (UnimplementedSysServer) UserDelete(context.Context, *UserDeleteReq) (*BaseResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserDelete not implemented")
 }
 func (UnimplementedSysServer) MenuAdd(context.Context, *MenuAddReq) (*MenuAddResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MenuAdd not implemented")
@@ -284,6 +299,24 @@ func _Sys_UserUpdate_Handler(srv interface{}, ctx context.Context, dec func(inte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Sys_UserDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserDeleteReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SysServer).UserDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Sys_UserDelete_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SysServer).UserDelete(ctx, req.(*UserDeleteReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Sys_MenuAdd_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(MenuAddReq)
 	if err := dec(in); err != nil {
@@ -382,6 +415,10 @@ var Sys_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UserUpdate",
 			Handler:    _Sys_UserUpdate_Handler,
+		},
+		{
+			MethodName: "UserDelete",
+			Handler:    _Sys_UserDelete_Handler,
 		},
 		{
 			MethodName: "MenuAdd",

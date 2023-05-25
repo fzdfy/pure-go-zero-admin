@@ -133,6 +133,41 @@
                 }
             }
         },
+        "/api/sys/user/delete": {
+            "post": {
+                "description": "user delete",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pure"
+                ],
+                "summary": "user delete logic",
+                "operationId": "UserDelete",
+                "parameters": [
+                    {
+                        "description": "user delete",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.DeleteUserReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.DeleteUserResp"
+                        }
+                    }
+                }
+            }
+        },
         "/api/sys/user/list": {
             "get": {
                 "security": [
@@ -302,6 +337,32 @@
             }
         },
         "types.AddUserResp": {
+            "type": "object",
+            "required": [
+                "code",
+                "message"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "types.DeleteUserReq": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "types.DeleteUserResp": {
             "type": "object",
             "required": [
                 "code",

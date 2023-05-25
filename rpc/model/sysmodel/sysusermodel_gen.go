@@ -32,6 +32,7 @@ type (
 		Count(ctx context.Context, sysUserQuery *SysUserQuery) (int64, error)
 		Update(ctx context.Context, data *SysUser) error
 		Delete(ctx context.Context, id int64) error
+		DeleteUser(ctx context.Context, data *SysUser ) error
 	}
 
 	defaultSysUserModel struct {
@@ -98,6 +99,12 @@ func (m *defaultSysUserModel) Delete(ctx context.Context, id int64) error {
 	return err
 }
 
+func (m *defaultSysUserModel) DeleteUser(ctx context.Context, data *SysUser ) error {
+	query := fmt.Sprintf("update %s set `del_flag` = ? , `last_update_by` = ?, `last_update_time` = ? where `id` = ?", m.table)
+	_, err := m.conn.ExecCtx(ctx, query, data.DelFlag, data.LastUpdateBy, data.LastUpdateTime, data.Id)
+	return err
+}
+
 func (m *defaultSysUserModel) FindOne(ctx context.Context, id int64) (*SysUser, error) {
 	query := fmt.Sprintf("select %s from %s where `id` = ? limit 1", sysUserRows, m.table)
 	var resp SysUser
@@ -128,39 +135,7 @@ func (m *defaultSysUserModel) FindOneByName(ctx context.Context, name string) (*
 
 func (m *defaultSysUserModel) FindAll(ctx context.Context, sysUserQuery *SysUserQuery, Current int64, PageSize int64) (*[]SysUserList, error) {
 
-	search := "1 = 1 "
-	if len(sysUserQuery.Name) > 0 {
-		search += fmt.Sprintf("and `name` LIKE '%s'", "%"+sysUserQuery.Name+"%")
-	}
-	if len(sysUserQuery.NickName) > 0 {
-		search += fmt.Sprintf("and `nick_name` LIKE '%s'", "%"+sysUserQuery.NickName+"%")
-	}
-	if len(sysUserQuery.Email) > 0 {
-		search += fmt.Sprintf("and `email` LIKE '%s'", "%"+sysUserQuery.Email+"%")
-	}
-	if len(sysUserQuery.Mobile) > 0 {
-		search += fmt.Sprintf("and `mobile` LIKE '%s'", "%"+sysUserQuery.Mobile+"%")
-	}
-	if enumx.CheckValueInUserStatusEnum(sysUserQuery.Status) {
-		search += fmt.Sprintf(" and `status` = %d", sysUserQuery.Status)
-	}
-
-	query := fmt.Sprintf("select %s from %s where %s limit ?,?", sysUserRows, m.table, search)
-	//query := "select sys_user.*, ifnull(sj.job_name,'') as job_name, ifnull(sd.name ,'')as dept_name, ifnull(sys_role.name,'') as role_name,ifnull(sys_role.id ,'1')as role_id from sys_user   left join sys_user_role sur on sys_user.id = sur.user_id   left join sys_role on sur.role_id = sys_role.id    left join sys_job sj on sys_user.job_id = sj.id left join sys_dept sd on sys_user.dept_id = sd.id limit ?,?"
-	var resp []SysUserList
-	err := m.conn.QueryRowsCtx(ctx, &resp, query, (Current-1)*PageSize, PageSize)
-	switch err {
-	case nil:
-		return &resp, nil
-	case sqlc.ErrNotFound:
-		return nil, ErrNotFound
-	default:
-		return nil, err
-	}
-}
-
-func (m *defaultSysUserModel) Count(ctx context.Context, sysUserQuery *SysUserQuery) (int64, error) {
-	search := "1 = 1"
+	search := ""
 	if len(sysUserQuery.Name) > 0 {
 		search += fmt.Sprintf(" and `name` LIKE '%s'", "%"+sysUserQuery.Name+"%")
 	}
@@ -177,7 +152,39 @@ func (m *defaultSysUserModel) Count(ctx context.Context, sysUserQuery *SysUserQu
 		search += fmt.Sprintf(" and `status` = %d", sysUserQuery.Status)
 	}
 
-	query := fmt.Sprintf("select count(*) as count from %s where %s", m.table, search)
+	query := fmt.Sprintf("select %s from %s where `del_flag` = 0 %s limit ?,?", sysUserRows, m.table, search)
+	//query := "select sys_user.*, ifnull(sj.job_name,'') as job_name, ifnull(sd.name ,'')as dept_name, ifnull(sys_role.name,'') as role_name,ifnull(sys_role.id ,'1')as role_id from sys_user   left join sys_user_role sur on sys_user.id = sur.user_id   left join sys_role on sur.role_id = sys_role.id    left join sys_job sj on sys_user.job_id = sj.id left join sys_dept sd on sys_user.dept_id = sd.id limit ?,?"
+	var resp []SysUserList
+	err := m.conn.QueryRowsCtx(ctx, &resp, query, (Current-1)*PageSize, PageSize)
+	switch err {
+	case nil:
+		return &resp, nil
+	case sqlc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
+}
+
+func (m *defaultSysUserModel) Count(ctx context.Context, sysUserQuery *SysUserQuery) (int64, error) {
+	search := ""
+	if len(sysUserQuery.Name) > 0 {
+		search += fmt.Sprintf(" and `name` LIKE '%s'", "%"+sysUserQuery.Name+"%")
+	}
+	if len(sysUserQuery.NickName) > 0 {
+		search += fmt.Sprintf(" and `nick_name` LIKE '%s'", "%"+sysUserQuery.NickName+"%")
+	}
+	if len(sysUserQuery.Email) > 0 {
+		search += fmt.Sprintf(" and `email` LIKE '%s'", "%"+sysUserQuery.Email+"%")
+	}
+	if len(sysUserQuery.Mobile) > 0 {
+		search += fmt.Sprintf(" and `mobile` LIKE '%s'", "%"+sysUserQuery.Mobile+"%")
+	}
+	if enumx.CheckValueInUserStatusEnum(sysUserQuery.Status) {
+		search += fmt.Sprintf(" and `status` = %d", sysUserQuery.Status)
+	}
+
+	query := fmt.Sprintf("select count(*) as count from %s where `del_flag` = 0 %s", m.table, search)
 
 	var count int64
 	err := m.conn.QueryRowCtx(ctx, &count, query)

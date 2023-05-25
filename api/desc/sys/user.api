@@ -85,6 +85,13 @@ type (
         Code string `json:"code"`
         Message string `json:"message"`
     }
+    DeleteUserReq struct {
+        Id int64 `json:"id"`
+    }
+    DeleteUserResp struct {
+        Code string `json:"code"`
+        Message string `json:"message"`
+    }
 )
 
 @server(
@@ -106,6 +113,9 @@ service admin-api {
 
     @handler UserUpdate
     post /update (UpdateUserReq) returns (UpdateUserResp)
+
+    @handler UserDelete
+    post /delete (DeleteUserReq) returns (DeleteUserResp)
 }
 
 @server(

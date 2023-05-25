@@ -47,6 +47,11 @@ func (s *SysServer) UserUpdate(ctx context.Context, in *sys.UserUpdateReq) (*sys
 	return l.UserUpdate(in)
 }
 
+func (s *SysServer) UserDelete(ctx context.Context, in *sys.UserDeleteReq) (*sys.BaseResp, error) {
+	l := logic.NewUserDeleteLogic(ctx, s.svcCtx)
+	return l.UserDelete(in)
+}
+
 func (s *SysServer) MenuAdd(ctx context.Context, in *sys.MenuAddReq) (*sys.MenuAddResp, error) {
 	l := logic.NewMenuAddLogic(ctx, s.svcCtx)
 	return l.MenuAdd(in)

@@ -59,5 +59,4 @@ func (l *UserUpdateLogic) UserUpdate(req *types.UpdateUserReq) (resp *types.Upda
 		Code:    "000000",
 		Message: "更新用户成功",
 	}, nil
-	return
 }

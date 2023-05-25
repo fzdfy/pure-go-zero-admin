@@ -28,6 +28,7 @@ type (
 	UpdateMenuRoleResp = sys.UpdateMenuRoleResp
 	UserAddReq         = sys.UserAddReq
 	UserAddResp        = sys.UserAddResp
+	UserDeleteReq      = sys.UserDeleteReq
 	UserInfoReq        = sys.UserInfoReq
 	UserInfoResp       = sys.UserInfoResp
 	UserListData       = sys.UserListData
@@ -43,6 +44,7 @@ type (
 		UserAdd(ctx context.Context, in *UserAddReq, opts ...grpc.CallOption) (*UserAddResp, error)
 		UserList(ctx context.Context, in *UserListReq, opts ...grpc.CallOption) (*UserListResp, error)
 		UserUpdate(ctx context.Context, in *UserUpdateReq, opts ...grpc.CallOption) (*BaseResp, error)
+		UserDelete(ctx context.Context, in *UserDeleteReq, opts ...grpc.CallOption) (*BaseResp, error)
 		MenuAdd(ctx context.Context, in *MenuAddReq, opts ...grpc.CallOption) (*MenuAddResp, error)
 		MenuList(ctx context.Context, in *MenuListReq, opts ...grpc.CallOption) (*MenuListResp, error)
 		MenuUpdate(ctx context.Context, in *MenuUpdateReq, opts ...grpc.CallOption) (*MenuUpdateResp, error)
@@ -83,6 +85,11 @@ func (m *defaultSys) UserList(ctx context.Context, in *UserListReq, opts ...grpc
 func (m *defaultSys) UserUpdate(ctx context.Context, in *UserUpdateReq, opts ...grpc.CallOption) (*BaseResp, error) {
 	client := sys.NewSysClient(m.cli.Conn())
 	return client.UserUpdate(ctx, in, opts...)
+}
+
+func (m *defaultSys) UserDelete(ctx context.Context, in *UserDeleteReq, opts ...grpc.CallOption) (*BaseResp, error) {
+	client := sys.NewSysClient(m.cli.Conn())
+	return client.UserDelete(ctx, in, opts...)
 }
 
 func (m *defaultSys) MenuAdd(ctx context.Context, in *MenuAddReq, opts ...grpc.CallOption) (*MenuAddResp, error) {

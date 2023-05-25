@@ -86,6 +86,15 @@ type UpdateUserResp struct {
 	Message string `json:"message"`
 }
 
+type DeleteUserReq struct {
+	Id int64 `json:"id"`
+}
+
+type DeleteUserResp struct {
+	Code    string `json:"code"`
+	Message string `json:"message"`
+}
+
 type AddMenuReq struct {
 	Name     string `json:"name"`              // 菜单名称
 	ParentId int64  `json:"parentId,optional"` // 父菜单ID，一级菜单为0
