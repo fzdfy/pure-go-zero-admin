@@ -56,7 +56,8 @@ func (l *UserListLogic) UserList(req *types.ListUserReq) (*types.ListUserResp, e
 		return nil, errorx.NewDefaultError("查询失败")
 	}
 
-	var list []*types.ListUserData
+	//var list []*types.ListUserData = make([]*types.ListUserData, 0)
+	var list []*types.ListUserData = []*types.ListUserData{}
 
 	for _, item := range resp.List {
 		listUserData := types.ListUserData{}

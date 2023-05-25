@@ -31,6 +31,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Path:    "/add",
 					Handler: sysuser.UserAddHandler(serverCtx),
 				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/update",
+					Handler: sysuser.UserUpdateHandler(serverCtx),
+				},
 			}...,
 		),
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),

@@ -30,7 +30,7 @@ type ListUserReq struct {
 	NickName string `form:"nickName,optional"`
 	Mobile   string `form:"mobile,optional"`
 	Email    string `form:"email,optional"`
-	Status   int64  `form:"status,optional"`
+	Status   int64  `form:"status,optional,default=-1"`
 }
 
 type ListUserData struct {
@@ -68,6 +68,20 @@ type AddUserReq struct {
 }
 
 type AddUserResp struct {
+	Code    string `json:"code"`
+	Message string `json:"message"`
+}
+
+type UpdateUserReq struct {
+	Id       int64  `json:"id"`
+	Email    string `json:"email"`
+	Mobile   string `json:"mobile"`
+	Name     string `json:"name"`
+	NickName string `json:"nickName"`
+	Status   int64  `json:"status"`
+}
+
+type UpdateUserResp struct {
 	Code    string `json:"code"`
 	Message string `json:"message"`
 }

@@ -3,6 +3,11 @@ syntax = "proto3";
 package sys;
 option go_package="./sys";
 
+
+message BaseResp {
+  string msg = 1;
+}
+
 //user start---------------------
 message UserLoginReq {
   string user_name = 1;
@@ -77,6 +82,17 @@ message UserListResp {
   int64 total = 1;
   repeated UserListData list = 2;
 }
+
+message UserUpdateReq {
+  int64 id = 1;
+  string email = 2;
+  string mobile = 3;
+  string name = 4;
+  string nick_name = 5;
+  string last_update_by = 8;
+  int64 status = 10;
+}
+
 //user end---------------------
 
 //menu start---------------------
@@ -168,6 +184,7 @@ service Sys {
   rpc UserInfo(UserInfoReq) returns(UserInfoResp);
   rpc UserAdd(UserAddReq) returns(UserAddResp);
   rpc UserList(UserListReq) returns(UserListResp);
+  rpc UserUpdate(UserUpdateReq) returns(BaseResp);
 
   rpc MenuAdd(MenuAddReq) returns(MenuAddResp);
   rpc MenuList(MenuListReq) returns(MenuListResp);

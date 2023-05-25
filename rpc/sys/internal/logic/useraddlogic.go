@@ -30,18 +30,13 @@ func (l *UserAddLogic) UserAdd(in *sys.UserAddReq) (*sys.UserAddResp, error) {
 	insert, _ := l.svcCtx.UserModel.Insert(l.ctx, &sysmodel.SysUser{
 		Name:           in.Name,
 		NickName:       in.NickName,
-		Avatar:         in.Avatar,
-		Password:       "123456",
-		Salt:           "123456",
 		Email:          in.Email,
 		Mobile:         in.Mobile,
 		Status:         1,
-		DeptId:         in.DeptId,
 		CreateBy:       "admin",
 		LastUpdateBy:   in.CreateBy,
 		LastUpdateTime: time.Now(),
 		DelFlag:        0,
-		JobId:          in.JobId,
 	})
 
 	insert.LastInsertId()

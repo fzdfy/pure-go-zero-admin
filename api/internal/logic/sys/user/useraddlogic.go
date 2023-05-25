@@ -24,16 +24,24 @@ func NewUserAddLogic(ctx context.Context, svcCtx *svc.ServiceContext) UserAddLog
 	}
 }
 
+// UserAdd godoc
+//
+//	@Id				UserAdd
+//	@Summary		user add logic
+//	@Description	user add
+//	@Tags			pure
+//	@Accept			json
+//	@Produce		json
+//	@Param			body	body	types.AddUserReq	 true	"user add"
+//	@Success		200		{object}	types.AddUserResp
+//	@Router			/api/sys/user/add [post]
 func (l *UserAddLogic) UserAdd(req types.AddUserReq) (*types.AddUserResp, error) {
 	_, err := l.svcCtx.Sys.UserAdd(l.ctx, &sys.UserAddReq{
 		Email:    req.Email,
 		Mobile:   req.Mobile,
 		Name:     req.Name,
 		NickName: req.NickName,
-		//DeptId:   req.DeptId,
 		CreateBy: "admin",
-		//RoleId:   req.RoleId,
-		//JobId:    req.JobId,
 	})
 
 	if err != nil {

@@ -23,6 +23,7 @@ const (
 	Sys_UserInfo_FullMethodName   = "/sys.Sys/UserInfo"
 	Sys_UserAdd_FullMethodName    = "/sys.Sys/UserAdd"
 	Sys_UserList_FullMethodName   = "/sys.Sys/UserList"
+	Sys_UserUpdate_FullMethodName = "/sys.Sys/UserUpdate"
 	Sys_MenuAdd_FullMethodName    = "/sys.Sys/MenuAdd"
 	Sys_MenuList_FullMethodName   = "/sys.Sys/MenuList"
 	Sys_MenuUpdate_FullMethodName = "/sys.Sys/MenuUpdate"
@@ -37,6 +38,7 @@ type SysClient interface {
 	UserInfo(ctx context.Context, in *UserInfoReq, opts ...grpc.CallOption) (*UserInfoResp, error)
 	UserAdd(ctx context.Context, in *UserAddReq, opts ...grpc.CallOption) (*UserAddResp, error)
 	UserList(ctx context.Context, in *UserListReq, opts ...grpc.CallOption) (*UserListResp, error)
+	UserUpdate(ctx context.Context, in *UserUpdateReq, opts ...grpc.CallOption) (*BaseResp, error)
 	MenuAdd(ctx context.Context, in *MenuAddReq, opts ...grpc.CallOption) (*MenuAddResp, error)
 	MenuList(ctx context.Context, in *MenuListReq, opts ...grpc.CallOption) (*MenuListResp, error)
 	MenuUpdate(ctx context.Context, in *MenuUpdateReq, opts ...grpc.CallOption) (*MenuUpdateResp, error)
@@ -87,6 +89,15 @@ func (c *sysClient) UserList(ctx context.Context, in *UserListReq, opts ...grpc.
 	return out, nil
 }
 
+func (c *sysClient) UserUpdate(ctx context.Context, in *UserUpdateReq, opts ...grpc.CallOption) (*BaseResp, error) {
+	out := new(BaseResp)
+	err := c.cc.Invoke(ctx, Sys_UserUpdate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *sysClient) MenuAdd(ctx context.Context, in *MenuAddReq, opts ...grpc.CallOption) (*MenuAddResp, error) {
 	out := new(MenuAddResp)
 	err := c.cc.Invoke(ctx, Sys_MenuAdd_FullMethodName, in, out, opts...)
@@ -131,6 +142,7 @@ type SysServer interface {
 	UserInfo(context.Context, *UserInfoReq) (*UserInfoResp, error)
 	UserAdd(context.Context, *UserAddReq) (*UserAddResp, error)
 	UserList(context.Context, *UserListReq) (*UserListResp, error)
+	UserUpdate(context.Context, *UserUpdateReq) (*BaseResp, error)
 	MenuAdd(context.Context, *MenuAddReq) (*MenuAddResp, error)
 	MenuList(context.Context, *MenuListReq) (*MenuListResp, error)
 	MenuUpdate(context.Context, *MenuUpdateReq) (*MenuUpdateResp, error)
@@ -153,6 +165,9 @@ func (UnimplementedSysServer) UserAdd(context.Context, *UserAddReq) (*UserAddRes
 }
 func (UnimplementedSysServer) UserList(context.Context, *UserListReq) (*UserListResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserList not implemented")
+}
+func (UnimplementedSysServer) UserUpdate(context.Context, *UserUpdateReq) (*BaseResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserUpdate not implemented")
 }
 func (UnimplementedSysServer) MenuAdd(context.Context, *MenuAddReq) (*MenuAddResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MenuAdd not implemented")
@@ -251,6 +266,24 @@ func _Sys_UserList_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Sys_UserUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserUpdateReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SysServer).UserUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Sys_UserUpdate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SysServer).UserUpdate(ctx, req.(*UserUpdateReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Sys_MenuAdd_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(MenuAddReq)
 	if err := dec(in); err != nil {
@@ -345,6 +378,10 @@ var Sys_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UserList",
 			Handler:    _Sys_UserList_Handler,
+		},
+		{
+			MethodName: "UserUpdate",
+			Handler:    _Sys_UserUpdate_Handler,
 		},
 		{
 			MethodName: "MenuAdd",

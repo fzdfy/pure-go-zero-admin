@@ -60,6 +60,41 @@
                 }
             }
         },
+        "/api/sys/user/add": {
+            "post": {
+                "description": "user add",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pure"
+                ],
+                "summary": "user add logic",
+                "operationId": "UserAdd",
+                "parameters": [
+                    {
+                        "description": "user add",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.AddUserReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.AddUserResp"
+                        }
+                    }
+                }
+            }
+        },
         "/api/sys/user/currentUser": {
             "get": {
                 "security": [
@@ -205,9 +240,82 @@
                     }
                 }
             }
+        },
+        "/api/sys/user/update": {
+            "post": {
+                "description": "user update",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pure"
+                ],
+                "summary": "user update logic",
+                "operationId": "UserUpdate",
+                "parameters": [
+                    {
+                        "description": "user update",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.UpdateUserReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.UpdateUserResp"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "types.AddUserReq": {
+            "type": "object",
+            "required": [
+                "email",
+                "mobile",
+                "name",
+                "nickName"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "mobile": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "nickName": {
+                    "type": "string"
+                }
+            }
+        },
+        "types.AddUserResp": {
+            "type": "object",
+            "required": [
+                "code",
+                "message"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
         "types.ListMenuData": {
             "type": "object",
             "required": [
@@ -422,6 +530,52 @@
                 },
                 "total": {
                     "type": "integer"
+                }
+            }
+        },
+        "types.UpdateUserReq": {
+            "type": "object",
+            "required": [
+                "email",
+                "id",
+                "mobile",
+                "name",
+                "nickName",
+                "status"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "mobile": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "nickName": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                }
+            }
+        },
+        "types.UpdateUserResp": {
+            "type": "object",
+            "required": [
+                "code",
+                "message"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
                 }
             }
         },

@@ -13,6 +13,7 @@ import (
 	"github.com/zeromicro/go-zero/core/stores/sqlc"
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
 	"github.com/zeromicro/go-zero/core/stringx"
+	"pure-go-zero-admin/common/enumx"
 )
 
 var (
@@ -129,20 +130,21 @@ func (m *defaultSysUserModel) FindAll(ctx context.Context, sysUserQuery *SysUser
 
 	search := "1 = 1 "
 	if len(sysUserQuery.Name) > 0 {
-		search += fmt.Sprintf("and `name` LIKE '%s'", sysUserQuery.Name)
+		search += fmt.Sprintf("and `name` LIKE '%s'", "%"+sysUserQuery.Name+"%")
 	}
 	if len(sysUserQuery.NickName) > 0 {
-		search += fmt.Sprintf("and `nick_name` LIKE '%s'", sysUserQuery.NickName)
+		search += fmt.Sprintf("and `nick_name` LIKE '%s'", "%"+sysUserQuery.NickName+"%")
 	}
 	if len(sysUserQuery.Email) > 0 {
-		search += fmt.Sprintf("and `email` LIKE '%s'", sysUserQuery.Email)
+		search += fmt.Sprintf("and `email` LIKE '%s'", "%"+sysUserQuery.Email+"%")
 	}
 	if len(sysUserQuery.Mobile) > 0 {
-		search += fmt.Sprintf("and `mobile` LIKE '%s'", sysUserQuery.Mobile)
+		search += fmt.Sprintf("and `mobile` LIKE '%s'", "%"+sysUserQuery.Mobile+"%")
 	}
-	//if sysUserQuery.Status != nil {
-	//	search = fmt.Sprintf("and `status` = %s", sysUserQuery.Status)
-	//}
+	if enumx.CheckValueInUserStatusEnum(sysUserQuery.Status) {
+		search += fmt.Sprintf(" and `status` = %d", sysUserQuery.Status)
+	}
+
 	query := fmt.Sprintf("select %s from %s where %s limit ?,?", sysUserRows, m.table, search)
 	//query := "select sys_user.*, ifnull(sj.job_name,'') as job_name, ifnull(sd.name ,'')as dept_name, ifnull(sys_role.name,'') as role_name,ifnull(sys_role.id ,'1')as role_id from sys_user   left join sys_user_role sur on sys_user.id = sur.user_id   left join sys_role on sur.role_id = sys_role.id    left join sys_job sj on sys_user.job_id = sj.id left join sys_dept sd on sys_user.dept_id = sd.id limit ?,?"
 	var resp []SysUserList
@@ -158,22 +160,22 @@ func (m *defaultSysUserModel) FindAll(ctx context.Context, sysUserQuery *SysUser
 }
 
 func (m *defaultSysUserModel) Count(ctx context.Context, sysUserQuery *SysUserQuery) (int64, error) {
-	search := "1 = 1 "
+	search := "1 = 1"
 	if len(sysUserQuery.Name) > 0 {
-		search += fmt.Sprintf("and `name` LIKE '%s'", sysUserQuery.Name)
+		search += fmt.Sprintf(" and `name` LIKE '%s'", "%"+sysUserQuery.Name+"%")
 	}
 	if len(sysUserQuery.NickName) > 0 {
-		search += fmt.Sprintf("and `nick_name` LIKE '%s'", sysUserQuery.NickName)
+		search += fmt.Sprintf(" and `nick_name` LIKE '%s'", "%"+sysUserQuery.NickName+"%")
 	}
 	if len(sysUserQuery.Email) > 0 {
-		search += fmt.Sprintf("and `email` LIKE '%s'", sysUserQuery.Email)
+		search += fmt.Sprintf(" and `email` LIKE '%s'", "%"+sysUserQuery.Email+"%")
 	}
 	if len(sysUserQuery.Mobile) > 0 {
-		search += fmt.Sprintf("and `mobile` LIKE '%s'", sysUserQuery.Mobile)
+		search += fmt.Sprintf(" and `mobile` LIKE '%s'", "%"+sysUserQuery.Mobile+"%")
 	}
-	//if sysUserQuery.Status != nil {
-	//	search = fmt.Sprintf("and `status` = %s", sysUserQuery.Status)
-	//}
+	if enumx.CheckValueInUserStatusEnum(sysUserQuery.Status) {
+		search += fmt.Sprintf(" and `status` = %d", sysUserQuery.Status)
+	}
 
 	query := fmt.Sprintf("select count(*) as count from %s where %s", m.table, search)
 
