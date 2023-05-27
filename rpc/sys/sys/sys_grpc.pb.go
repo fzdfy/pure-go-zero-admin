@@ -29,6 +29,10 @@ const (
 	Sys_MenuList_FullMethodName   = "/sys.Sys/MenuList"
 	Sys_MenuUpdate_FullMethodName = "/sys.Sys/MenuUpdate"
 	Sys_MenuDelete_FullMethodName = "/sys.Sys/MenuDelete"
+	Sys_RoleAdd_FullMethodName    = "/sys.Sys/RoleAdd"
+	Sys_RoleList_FullMethodName   = "/sys.Sys/RoleList"
+	Sys_RoleUpdate_FullMethodName = "/sys.Sys/RoleUpdate"
+	Sys_RoleDelete_FullMethodName = "/sys.Sys/RoleDelete"
 )
 
 // SysClient is the client API for Sys service.
@@ -37,14 +41,18 @@ const (
 type SysClient interface {
 	UserLogin(ctx context.Context, in *UserLoginReq, opts ...grpc.CallOption) (*UserLoginResp, error)
 	UserInfo(ctx context.Context, in *UserInfoReq, opts ...grpc.CallOption) (*UserInfoResp, error)
-	UserAdd(ctx context.Context, in *UserAddReq, opts ...grpc.CallOption) (*UserAddResp, error)
+	UserAdd(ctx context.Context, in *UserAddReq, opts ...grpc.CallOption) (*BaseResp, error)
 	UserList(ctx context.Context, in *UserListReq, opts ...grpc.CallOption) (*UserListResp, error)
 	UserUpdate(ctx context.Context, in *UserUpdateReq, opts ...grpc.CallOption) (*BaseResp, error)
 	UserDelete(ctx context.Context, in *UserDeleteReq, opts ...grpc.CallOption) (*BaseResp, error)
-	MenuAdd(ctx context.Context, in *MenuAddReq, opts ...grpc.CallOption) (*MenuAddResp, error)
+	MenuAdd(ctx context.Context, in *MenuAddReq, opts ...grpc.CallOption) (*BaseResp, error)
 	MenuList(ctx context.Context, in *MenuListReq, opts ...grpc.CallOption) (*MenuListResp, error)
-	MenuUpdate(ctx context.Context, in *MenuUpdateReq, opts ...grpc.CallOption) (*MenuUpdateResp, error)
-	MenuDelete(ctx context.Context, in *MenuDeleteReq, opts ...grpc.CallOption) (*MenuDeleteResp, error)
+	MenuUpdate(ctx context.Context, in *MenuUpdateReq, opts ...grpc.CallOption) (*BaseResp, error)
+	MenuDelete(ctx context.Context, in *MenuDeleteReq, opts ...grpc.CallOption) (*BaseResp, error)
+	RoleAdd(ctx context.Context, in *RoleAddReq, opts ...grpc.CallOption) (*BaseResp, error)
+	RoleList(ctx context.Context, in *RoleListReq, opts ...grpc.CallOption) (*RoleListResp, error)
+	RoleUpdate(ctx context.Context, in *RoleUpdateReq, opts ...grpc.CallOption) (*BaseResp, error)
+	RoleDelete(ctx context.Context, in *RoleDeleteReq, opts ...grpc.CallOption) (*BaseResp, error)
 }
 
 type sysClient struct {
@@ -73,8 +81,8 @@ func (c *sysClient) UserInfo(ctx context.Context, in *UserInfoReq, opts ...grpc.
 	return out, nil
 }
 
-func (c *sysClient) UserAdd(ctx context.Context, in *UserAddReq, opts ...grpc.CallOption) (*UserAddResp, error) {
-	out := new(UserAddResp)
+func (c *sysClient) UserAdd(ctx context.Context, in *UserAddReq, opts ...grpc.CallOption) (*BaseResp, error) {
+	out := new(BaseResp)
 	err := c.cc.Invoke(ctx, Sys_UserAdd_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -109,8 +117,8 @@ func (c *sysClient) UserDelete(ctx context.Context, in *UserDeleteReq, opts ...g
 	return out, nil
 }
 
-func (c *sysClient) MenuAdd(ctx context.Context, in *MenuAddReq, opts ...grpc.CallOption) (*MenuAddResp, error) {
-	out := new(MenuAddResp)
+func (c *sysClient) MenuAdd(ctx context.Context, in *MenuAddReq, opts ...grpc.CallOption) (*BaseResp, error) {
+	out := new(BaseResp)
 	err := c.cc.Invoke(ctx, Sys_MenuAdd_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -127,8 +135,8 @@ func (c *sysClient) MenuList(ctx context.Context, in *MenuListReq, opts ...grpc.
 	return out, nil
 }
 
-func (c *sysClient) MenuUpdate(ctx context.Context, in *MenuUpdateReq, opts ...grpc.CallOption) (*MenuUpdateResp, error) {
-	out := new(MenuUpdateResp)
+func (c *sysClient) MenuUpdate(ctx context.Context, in *MenuUpdateReq, opts ...grpc.CallOption) (*BaseResp, error) {
+	out := new(BaseResp)
 	err := c.cc.Invoke(ctx, Sys_MenuUpdate_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -136,9 +144,45 @@ func (c *sysClient) MenuUpdate(ctx context.Context, in *MenuUpdateReq, opts ...g
 	return out, nil
 }
 
-func (c *sysClient) MenuDelete(ctx context.Context, in *MenuDeleteReq, opts ...grpc.CallOption) (*MenuDeleteResp, error) {
-	out := new(MenuDeleteResp)
+func (c *sysClient) MenuDelete(ctx context.Context, in *MenuDeleteReq, opts ...grpc.CallOption) (*BaseResp, error) {
+	out := new(BaseResp)
 	err := c.cc.Invoke(ctx, Sys_MenuDelete_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sysClient) RoleAdd(ctx context.Context, in *RoleAddReq, opts ...grpc.CallOption) (*BaseResp, error) {
+	out := new(BaseResp)
+	err := c.cc.Invoke(ctx, Sys_RoleAdd_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sysClient) RoleList(ctx context.Context, in *RoleListReq, opts ...grpc.CallOption) (*RoleListResp, error) {
+	out := new(RoleListResp)
+	err := c.cc.Invoke(ctx, Sys_RoleList_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sysClient) RoleUpdate(ctx context.Context, in *RoleUpdateReq, opts ...grpc.CallOption) (*BaseResp, error) {
+	out := new(BaseResp)
+	err := c.cc.Invoke(ctx, Sys_RoleUpdate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sysClient) RoleDelete(ctx context.Context, in *RoleDeleteReq, opts ...grpc.CallOption) (*BaseResp, error) {
+	out := new(BaseResp)
+	err := c.cc.Invoke(ctx, Sys_RoleDelete_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -151,14 +195,18 @@ func (c *sysClient) MenuDelete(ctx context.Context, in *MenuDeleteReq, opts ...g
 type SysServer interface {
 	UserLogin(context.Context, *UserLoginReq) (*UserLoginResp, error)
 	UserInfo(context.Context, *UserInfoReq) (*UserInfoResp, error)
-	UserAdd(context.Context, *UserAddReq) (*UserAddResp, error)
+	UserAdd(context.Context, *UserAddReq) (*BaseResp, error)
 	UserList(context.Context, *UserListReq) (*UserListResp, error)
 	UserUpdate(context.Context, *UserUpdateReq) (*BaseResp, error)
 	UserDelete(context.Context, *UserDeleteReq) (*BaseResp, error)
-	MenuAdd(context.Context, *MenuAddReq) (*MenuAddResp, error)
+	MenuAdd(context.Context, *MenuAddReq) (*BaseResp, error)
 	MenuList(context.Context, *MenuListReq) (*MenuListResp, error)
-	MenuUpdate(context.Context, *MenuUpdateReq) (*MenuUpdateResp, error)
-	MenuDelete(context.Context, *MenuDeleteReq) (*MenuDeleteResp, error)
+	MenuUpdate(context.Context, *MenuUpdateReq) (*BaseResp, error)
+	MenuDelete(context.Context, *MenuDeleteReq) (*BaseResp, error)
+	RoleAdd(context.Context, *RoleAddReq) (*BaseResp, error)
+	RoleList(context.Context, *RoleListReq) (*RoleListResp, error)
+	RoleUpdate(context.Context, *RoleUpdateReq) (*BaseResp, error)
+	RoleDelete(context.Context, *RoleDeleteReq) (*BaseResp, error)
 	mustEmbedUnimplementedSysServer()
 }
 
@@ -172,7 +220,7 @@ func (UnimplementedSysServer) UserLogin(context.Context, *UserLoginReq) (*UserLo
 func (UnimplementedSysServer) UserInfo(context.Context, *UserInfoReq) (*UserInfoResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserInfo not implemented")
 }
-func (UnimplementedSysServer) UserAdd(context.Context, *UserAddReq) (*UserAddResp, error) {
+func (UnimplementedSysServer) UserAdd(context.Context, *UserAddReq) (*BaseResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserAdd not implemented")
 }
 func (UnimplementedSysServer) UserList(context.Context, *UserListReq) (*UserListResp, error) {
@@ -184,17 +232,29 @@ func (UnimplementedSysServer) UserUpdate(context.Context, *UserUpdateReq) (*Base
 func (UnimplementedSysServer) UserDelete(context.Context, *UserDeleteReq) (*BaseResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserDelete not implemented")
 }
-func (UnimplementedSysServer) MenuAdd(context.Context, *MenuAddReq) (*MenuAddResp, error) {
+func (UnimplementedSysServer) MenuAdd(context.Context, *MenuAddReq) (*BaseResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MenuAdd not implemented")
 }
 func (UnimplementedSysServer) MenuList(context.Context, *MenuListReq) (*MenuListResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MenuList not implemented")
 }
-func (UnimplementedSysServer) MenuUpdate(context.Context, *MenuUpdateReq) (*MenuUpdateResp, error) {
+func (UnimplementedSysServer) MenuUpdate(context.Context, *MenuUpdateReq) (*BaseResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MenuUpdate not implemented")
 }
-func (UnimplementedSysServer) MenuDelete(context.Context, *MenuDeleteReq) (*MenuDeleteResp, error) {
+func (UnimplementedSysServer) MenuDelete(context.Context, *MenuDeleteReq) (*BaseResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MenuDelete not implemented")
+}
+func (UnimplementedSysServer) RoleAdd(context.Context, *RoleAddReq) (*BaseResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RoleAdd not implemented")
+}
+func (UnimplementedSysServer) RoleList(context.Context, *RoleListReq) (*RoleListResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RoleList not implemented")
+}
+func (UnimplementedSysServer) RoleUpdate(context.Context, *RoleUpdateReq) (*BaseResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RoleUpdate not implemented")
+}
+func (UnimplementedSysServer) RoleDelete(context.Context, *RoleDeleteReq) (*BaseResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RoleDelete not implemented")
 }
 func (UnimplementedSysServer) mustEmbedUnimplementedSysServer() {}
 
@@ -389,6 +449,78 @@ func _Sys_MenuDelete_Handler(srv interface{}, ctx context.Context, dec func(inte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Sys_RoleAdd_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RoleAddReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SysServer).RoleAdd(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Sys_RoleAdd_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SysServer).RoleAdd(ctx, req.(*RoleAddReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Sys_RoleList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RoleListReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SysServer).RoleList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Sys_RoleList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SysServer).RoleList(ctx, req.(*RoleListReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Sys_RoleUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RoleUpdateReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SysServer).RoleUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Sys_RoleUpdate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SysServer).RoleUpdate(ctx, req.(*RoleUpdateReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Sys_RoleDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RoleDeleteReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SysServer).RoleDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Sys_RoleDelete_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SysServer).RoleDelete(ctx, req.(*RoleDeleteReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Sys_ServiceDesc is the grpc.ServiceDesc for Sys service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -435,6 +567,22 @@ var Sys_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "MenuDelete",
 			Handler:    _Sys_MenuDelete_Handler,
+		},
+		{
+			MethodName: "RoleAdd",
+			Handler:    _Sys_RoleAdd_Handler,
+		},
+		{
+			MethodName: "RoleList",
+			Handler:    _Sys_RoleList_Handler,
+		},
+		{
+			MethodName: "RoleUpdate",
+			Handler:    _Sys_RoleUpdate_Handler,
+		},
+		{
+			MethodName: "RoleDelete",
+			Handler:    _Sys_RoleDelete_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

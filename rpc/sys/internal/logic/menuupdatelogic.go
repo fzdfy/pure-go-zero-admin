@@ -2,6 +2,8 @@ package logic
 
 import (
 	"context"
+	"pure-go-zero-admin/rpc/model/sysmodel"
+	"time"
 
 	"pure-go-zero-admin/rpc/sys/internal/svc"
 	"pure-go-zero-admin/rpc/sys/sys"
@@ -23,8 +25,23 @@ func NewMenuUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *MenuUp
 	}
 }
 
-func (l *MenuUpdateLogic) MenuUpdate(in *sys.MenuUpdateReq) (*sys.MenuUpdateResp, error) {
-	// todo: add your logic here and delete this line
+func (l *MenuUpdateLogic) MenuUpdate(in *sys.MenuUpdateReq) (*sys.BaseResp, error) {
+	err := l.svcCtx.MenuModel.Update(l.ctx, &sysmodel.SysMenu{
+		Id:             in.Id,
+		Name:           in.Name,
+		ParentId:       in.ParentId,
+		Path:           in.Path,
+		Perms:          in.Perms,
+		Type:           in.Type,
+		Icon:           in.Icon,
+		OrderNum:       in.OrderNum,
+		LastUpdateBy:   in.LastUpdateBy,
+		Status:         in.Status,
+		LastUpdateTime: time.Now(),
+	})
 
-	return &sys.MenuUpdateResp{}, nil
+	if err != nil {
+		return nil, err
+	}
+	return &sys.BaseResp{}, nil
 }

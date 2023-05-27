@@ -1,5 +1,6 @@
 import "sys/user.api"
 import "sys/menu.api"
+import "sys/role.api"
 
 info(
 	desc: "go zero admin"

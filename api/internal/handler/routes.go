@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	sysmenu "pure-go-zero-admin/api/internal/handler/sys/menu"
+	sysrole "pure-go-zero-admin/api/internal/handler/sys/role"
 	sysuser "pure-go-zero-admin/api/internal/handler/sys/user"
 	"pure-go-zero-admin/api/internal/svc"
 
@@ -85,5 +86,35 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		),
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 		rest.WithPrefix("/api/sys/menu"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.CheckUrl},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/add",
+					Handler: sysrole.RoleAddHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/list",
+					Handler: sysrole.RoleListHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/update",
+					Handler: sysrole.RoleUpdateHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/delete",
+					Handler: sysrole.RoleDeleteHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
+		rest.WithPrefix("/api/sys/role"),
 	)
 }

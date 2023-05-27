@@ -26,7 +26,7 @@ func NewUserUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserUp
 }
 
 func (l *UserUpdateLogic) UserUpdate(in *sys.UserUpdateReq) (*sys.BaseResp, error) {
-	_ = l.svcCtx.UserModel.Update(l.ctx, &sysmodel.SysUser{
+	err := l.svcCtx.UserModel.Update(l.ctx, &sysmodel.SysUser{
 		Id:             in.Id,
 		Name:           in.Name,
 		NickName:       in.NickName,
@@ -37,5 +37,8 @@ func (l *UserUpdateLogic) UserUpdate(in *sys.UserUpdateReq) (*sys.BaseResp, erro
 		LastUpdateTime: time.Now(),
 	})
 
+	if err != nil {
+		return nil, err
+	}
 	return &sys.BaseResp{}, nil
 }

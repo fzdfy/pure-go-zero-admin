@@ -32,7 +32,7 @@ func (s *SysServer) UserInfo(ctx context.Context, in *sys.UserInfoReq) (*sys.Use
 	return l.UserInfo(in)
 }
 
-func (s *SysServer) UserAdd(ctx context.Context, in *sys.UserAddReq) (*sys.UserAddResp, error) {
+func (s *SysServer) UserAdd(ctx context.Context, in *sys.UserAddReq) (*sys.BaseResp, error) {
 	l := logic.NewUserAddLogic(ctx, s.svcCtx)
 	return l.UserAdd(in)
 }
@@ -52,7 +52,7 @@ func (s *SysServer) UserDelete(ctx context.Context, in *sys.UserDeleteReq) (*sys
 	return l.UserDelete(in)
 }
 
-func (s *SysServer) MenuAdd(ctx context.Context, in *sys.MenuAddReq) (*sys.MenuAddResp, error) {
+func (s *SysServer) MenuAdd(ctx context.Context, in *sys.MenuAddReq) (*sys.BaseResp, error) {
 	l := logic.NewMenuAddLogic(ctx, s.svcCtx)
 	return l.MenuAdd(in)
 }
@@ -62,12 +62,32 @@ func (s *SysServer) MenuList(ctx context.Context, in *sys.MenuListReq) (*sys.Men
 	return l.MenuList(in)
 }
 
-func (s *SysServer) MenuUpdate(ctx context.Context, in *sys.MenuUpdateReq) (*sys.MenuUpdateResp, error) {
+func (s *SysServer) MenuUpdate(ctx context.Context, in *sys.MenuUpdateReq) (*sys.BaseResp, error) {
 	l := logic.NewMenuUpdateLogic(ctx, s.svcCtx)
 	return l.MenuUpdate(in)
 }
 
-func (s *SysServer) MenuDelete(ctx context.Context, in *sys.MenuDeleteReq) (*sys.MenuDeleteResp, error) {
+func (s *SysServer) MenuDelete(ctx context.Context, in *sys.MenuDeleteReq) (*sys.BaseResp, error) {
 	l := logic.NewMenuDeleteLogic(ctx, s.svcCtx)
 	return l.MenuDelete(in)
+}
+
+func (s *SysServer) RoleAdd(ctx context.Context, in *sys.RoleAddReq) (*sys.BaseResp, error) {
+	l := logic.NewRoleAddLogic(ctx, s.svcCtx)
+	return l.RoleAdd(in)
+}
+
+func (s *SysServer) RoleList(ctx context.Context, in *sys.RoleListReq) (*sys.RoleListResp, error) {
+	l := logic.NewRoleListLogic(ctx, s.svcCtx)
+	return l.RoleList(in)
+}
+
+func (s *SysServer) RoleUpdate(ctx context.Context, in *sys.RoleUpdateReq) (*sys.BaseResp, error) {
+	l := logic.NewRoleUpdateLogic(ctx, s.svcCtx)
+	return l.RoleUpdate(in)
+}
+
+func (s *SysServer) RoleDelete(ctx context.Context, in *sys.RoleDeleteReq) (*sys.BaseResp, error) {
+	l := logic.NewRoleDeleteLogic(ctx, s.svcCtx)
+	return l.RoleDelete(in)
 }

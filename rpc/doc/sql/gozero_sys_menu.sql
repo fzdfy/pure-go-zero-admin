@@ -12,6 +12,7 @@ CREATE TABLE `sys_menu` (
                             `last_update_by` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '更新人',
                             `last_update_time` datetime DEFAULT NULL COMMENT '更新时间',
                             `del_flag` tinyint DEFAULT '0' COMMENT '是否删除  -1：已删除  0：正常',
+                            `status` bigint DEFAULT '1' COMMENT '状态  1:启用,0:禁用',
                             PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='菜单管理';
 

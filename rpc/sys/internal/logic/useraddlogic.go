@@ -26,20 +26,21 @@ func NewUserAddLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserAddLo
 	}
 }
 
-func (l *UserAddLogic) UserAdd(in *sys.UserAddReq) (*sys.UserAddResp, error) {
-	insert, _ := l.svcCtx.UserModel.Insert(l.ctx, &sysmodel.SysUser{
+func (l *UserAddLogic) UserAdd(in *sys.UserAddReq) (*sys.BaseResp, error) {
+	_, err := l.svcCtx.UserModel.Insert(l.ctx, &sysmodel.SysUser{
 		Name:           in.Name,
 		NickName:       in.NickName,
 		Email:          in.Email,
 		Mobile:         in.Mobile,
 		Status:         1,
 		CreateBy:       "admin",
+		CreateTime:     time.Now(),
 		LastUpdateBy:   in.CreateBy,
 		LastUpdateTime: time.Now(),
 		DelFlag:        0,
 	})
 
-	insert.LastInsertId()
+	//insert.LastInsertId()
 	//id, _ := insert.LastInsertId()
 	//_ = l.svcCtx.UserRoleModel.Delete(id)
 	//
@@ -52,5 +53,9 @@ func (l *UserAddLogic) UserAdd(in *sys.UserAddReq) (*sys.UserAddResp, error) {
 	//	LastUpdateTime: time.Now(),
 	//})
 
-	return &sys.UserAddResp{}, nil
+	if err != nil {
+		return nil, err
+	}
+
+	return &sys.BaseResp{}, nil
 }

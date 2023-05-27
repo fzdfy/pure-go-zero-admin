@@ -111,8 +111,11 @@ type AddMenuResp struct {
 }
 
 type ListMenuReq struct {
-	Name string `form:"name,optional"`
-	Path string `form:"path,optional "`
+	Current  int64  `form:"current,default=1"`
+	PageSize int64  `form:"pageSize,default=20"`
+	Name     string `form:"name,optional"`
+	Path     string `form:"path,optional"`
+	Status   int64  `form:"status,optional,default=-1"`
 }
 
 type ListMenuData struct {
@@ -148,6 +151,7 @@ type UpdateMenuReq struct {
 	Type     int64  `json:"type,optional"`     // 类型   0：目录   1：菜单   2：按钮
 	Icon     string `json:"icon,optional"`     // 菜单图标
 	OrderNum int64  `json:"orderNum,optional"` // 排序
+	Status   int64  `json:"status,optional"`
 }
 
 type UpdateMenuResp struct {
@@ -160,6 +164,66 @@ type DeleteMenuReq struct {
 }
 
 type DeleteMenuResp struct {
+	Code    string `json:"code"`
+	Message string `json:"message"`
+}
+
+type AddRoleReq struct {
+	Name   string `json:"name"`   // 角色名称
+	Remark string `json:"remark"` // 备注
+}
+
+type AddRoleResp struct {
+	Code    string `json:"code"`
+	Message string `json:"message"`
+}
+
+type ListRoleReq struct {
+	Current  int64  `form:"current,default=1"`
+	PageSize int64  `form:"pageSize,default=20"`
+	Name     string `form:"name,optional "`
+	Status   int64  `form:"status,optional,default=-1"`
+}
+
+type ListRoleData struct {
+	Id             int64  `json:"id"`             // 编号
+	Name           string `json:"name"`           // 角色名称
+	Remark         string `json:"remark"`         // 备注
+	CreateBy       string `json:"createBy"`       // 创建人
+	CreateTime     string `json:"createTime"`     // 创建时间
+	LastUpdateBy   string `json:"lastUpdateBy"`   // 更新人
+	LastUpdateTime string `json:"lastUpdateTime"` // 更新时间
+	DelFlag        int64  `json:"delFlag"`        // 是否删除  -1：已删除  0：正常
+	Status         int64  `json:"status"`         // 状态
+}
+
+type ListRoleResp struct {
+	Code     string          `json:"code"`
+	Message  string          `json:"message"`
+	Current  int64           `json:"current,default=1"`
+	Data     []*ListRoleData `json:"data"`
+	PageSize int64           `json:"pageSize,default=20"`
+	Success  bool            `json:"success"`
+	Total    int64           `json:"total"`
+}
+
+type UpdateRoleReq struct {
+	Id     int64  `json:"id"`     // 编号
+	Name   string `json:"name"`   // 角色名称
+	Remark string `json:"remark"` // 备注
+	Status int64  `json:"status"` // 状态
+}
+
+type UpdateRoleResp struct {
+	Code    string `json:"code"`
+	Message string `json:"message"`
+}
+
+type DeleteRoleReq struct {
+	Id int64 `json:"id"`
+}
+
+type DeleteRoleResp struct {
 	Code    string `json:"code"`
 	Message string `json:"message"`
 }

@@ -27,7 +27,7 @@ func NewUserListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserList
 
 func (l *UserListLogic) UserList(in *sys.UserListReq) (*sys.UserListResp, error) {
 
-	query := sysmodel.SysUserQuery{
+	query := sysmodel.SysUser{
 		Name:     in.Name,
 		NickName: in.NickName,
 		Email:    in.Email,

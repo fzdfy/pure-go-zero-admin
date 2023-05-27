@@ -6,6 +6,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"pure-go-zero-admin/common/enumx"
 	"strings"
 	"time"
 
@@ -26,11 +27,12 @@ type (
 	sysMenuModel interface {
 		Insert(ctx context.Context, data *SysMenu) (sql.Result, error)
 		FindOne(ctx context.Context, id int64) (*SysMenu, error)
-		FindAll(ctx context.Context, Current int64, PageSize int64) (*[]SysMenu, error)
+		FindAll(ctx context.Context, data *SysMenu, Current int64, PageSize int64) (*[]SysMenu, error)
 		FindAllByUserId(ctx context.Context, userId int64) (*[]SysMenu, error)
-		Count(ctx context.Context) (int64, error)
+		Count(ctx context.Context, data *SysMenu) (int64, error)
 		Update(ctx context.Context, data *SysMenu) error
 		Delete(ctx context.Context, id int64) error
+		DeleteMenu(ctx context.Context, data *SysMenu ) error
 	}
 
 	defaultSysMenuModel struct {
@@ -52,6 +54,7 @@ type (
 		LastUpdateBy   string `db:"last_update_by"`   // 更新人
 		LastUpdateTime time.Time   `db:"last_update_time"` // 更新时间
 		DelFlag        int64          `db:"del_flag"`         // 是否删除  -1：已删除  0：正常
+		Status         int64          `db:"status"`           // 状态  1:启用,0:禁用
 	}
 )
 
@@ -65,6 +68,12 @@ func newSysMenuModel(conn sqlx.SqlConn) *defaultSysMenuModel {
 func (m *defaultSysMenuModel) Delete(ctx context.Context, id int64) error {
 	query := fmt.Sprintf("delete from %s where `id` = ?", m.table)
 	_, err := m.conn.ExecCtx(ctx, query, id)
+	return err
+}
+
+func (m *defaultSysMenuModel) DeleteMenu(ctx context.Context, data *SysMenu ) error {
+	query := fmt.Sprintf("update %s set `del_flag` = ? , `last_update_by` = ?, `last_update_time` = ? where `id` = ?", m.table)
+	_, err := m.conn.ExecCtx(ctx, query, data.DelFlag, data.LastUpdateBy, data.LastUpdateTime, data.Id)
 	return err
 }
 
@@ -82,8 +91,19 @@ func (m *defaultSysMenuModel) FindOne(ctx context.Context, id int64) (*SysMenu, 
 	}
 }
 
-func (m *defaultSysMenuModel) FindAll(ctx context.Context, Current int64, PageSize int64) (*[]SysMenu, error) {
-	query := fmt.Sprintf("select %s from %s order by id limit ?,?", sysMenuRows, m.table)
+func (m *defaultSysMenuModel) FindAll(ctx context.Context, data *SysMenu, Current int64, PageSize int64) (*[]SysMenu, error) {
+	search := ""
+	if len(data.Name) > 0 {
+		search += fmt.Sprintf(" and `name` LIKE '%s'", "%"+data.Name+"%")
+	}
+	if len(data.Path) > 0 {
+		search += fmt.Sprintf(" and `path` LIKE '%s'", "%"+data.Path+"%")
+	}
+	if enumx.CheckValueInUserStatusEnum(data.Status) {
+		search += fmt.Sprintf(" and `status` = %d", data.Status)
+	}
+
+	query := fmt.Sprintf("select %s from %s where `del_flag` = 0 %s limit ?,?", sysMenuRows, m.table, search)
 	var resp []SysMenu
 	err := m.conn.QueryRowsCtx(ctx, &resp, query, (Current-1)*PageSize, PageSize)
 	switch err {
@@ -110,8 +130,19 @@ func (m *defaultSysMenuModel) FindAllByUserId(ctx context.Context, userId int64)
 	}
 }
 
-func (m *defaultSysMenuModel) Count(ctx context.Context) (int64, error) {
-	query := fmt.Sprintf("select count(*) as count from %s", m.table)
+func (m *defaultSysMenuModel) Count(ctx context.Context, data *SysMenu) (int64, error) {
+	search := ""
+	if len(data.Name) > 0 {
+		search += fmt.Sprintf(" and `name` LIKE '%s'", "%"+data.Name+"%")
+	}
+	if len(data.Path) > 0 {
+		search += fmt.Sprintf(" and `path` LIKE '%s'", "%"+data.Path+"%")
+	}
+	if enumx.CheckValueInUserStatusEnum(data.Status) {
+		search += fmt.Sprintf(" and `status` = %d", data.Status)
+	}
+
+	query := fmt.Sprintf("select count(*) as count from %s where `del_flag` = 0 %s", m.table, search)
 
 	var count int64
 	err := m.conn.QueryRowCtx(ctx, &count, query)

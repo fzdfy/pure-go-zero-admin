@@ -25,12 +25,15 @@ func NewUserDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserDe
 }
 
 func (l *UserDeleteLogic) UserDelete(in *sys.UserDeleteReq) (*sys.BaseResp, error) {
-	_ = l.svcCtx.UserModel.DeleteUser(l.ctx, &sysmodel.SysUser{
+	err := l.svcCtx.UserModel.DeleteUser(l.ctx, &sysmodel.SysUser{
 		Id:             in.Id,
 		DelFlag:        -1,
 		LastUpdateBy:   in.LastUpdateBy,
 		LastUpdateTime: time.Now(),
 	})
 
+	if err != nil {
+		return nil, err
+	}
 	return &sys.BaseResp{}, nil
 }

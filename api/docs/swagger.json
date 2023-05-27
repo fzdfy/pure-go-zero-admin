@@ -17,6 +17,76 @@
     },
     "basePath": "/_",
     "paths": {
+        "/api/sys/menu/add": {
+            "post": {
+                "description": "menu add",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pure"
+                ],
+                "summary": "menu add logic",
+                "operationId": "MenuAdd",
+                "parameters": [
+                    {
+                        "description": "menu add",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.AddMenuReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.AddMenuResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/sys/menu/delete": {
+            "post": {
+                "description": "menu delete",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pure"
+                ],
+                "summary": "menu delete logic",
+                "operationId": "MenuDelete",
+                "parameters": [
+                    {
+                        "description": "menu delete",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.DeleteMenuReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.DeleteMenuResp"
+                        }
+                    }
+                }
+            }
+        },
         "/api/sys/menu/list": {
             "get": {
                 "security": [
@@ -48,6 +118,12 @@
                         "description": "List Menu",
                         "name": "path",
                         "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "List Menu",
+                        "name": "status",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -55,6 +131,189 @@
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/types.ListMenuResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/sys/menu/update": {
+            "post": {
+                "description": "menu update",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pure"
+                ],
+                "summary": "menu update logic",
+                "operationId": "MenuUpdate",
+                "parameters": [
+                    {
+                        "description": "menu update",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.UpdateMenuReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.UpdateMenuResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/sys/role/add": {
+            "post": {
+                "description": "role add",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pure"
+                ],
+                "summary": "role add logic",
+                "operationId": "RoleAdd",
+                "parameters": [
+                    {
+                        "description": "role add",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.AddRoleReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.AddRoleResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/sys/role/delete": {
+            "post": {
+                "description": "role delete",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pure"
+                ],
+                "summary": "role delete logic",
+                "operationId": "RoleDelete",
+                "parameters": [
+                    {
+                        "description": "role delete",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.DeleteRoleReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.DeleteRoleResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/sys/role/list": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "role list",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pure"
+                ],
+                "summary": "role list logic",
+                "operationId": "RoleList",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "list role",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "list role",
+                        "name": "status",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.ListRoleResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/sys/role/update": {
+            "post": {
+                "description": "role update",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pure"
+                ],
+                "summary": "role update logic",
+                "operationId": "RoleUpdate",
+                "parameters": [
+                    {
+                        "description": "role update",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.UpdateRoleReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.UpdateRoleResp"
                         }
                     }
                 }
@@ -313,6 +572,95 @@
         }
     },
     "definitions": {
+        "types.AddMenuReq": {
+            "type": "object",
+            "required": [
+                "icon",
+                "name",
+                "orderNum",
+                "parentId",
+                "path",
+                "perms",
+                "type"
+            ],
+            "properties": {
+                "icon": {
+                    "description": "菜单图标",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "菜单名称",
+                    "type": "string"
+                },
+                "orderNum": {
+                    "description": "排序",
+                    "type": "integer"
+                },
+                "parentId": {
+                    "description": "父菜单ID，一级菜单为0",
+                    "type": "integer"
+                },
+                "path": {
+                    "description": "菜单URL,类型：1.普通页面（如用户管理， /sysmodel/user） 2.嵌套完整外部页面，以http(s)开头的链接 3.嵌套服务器页面，使用iframe:前缀+目标URL(如SQL监控， iframe:/druid/login.html, iframe:前缀会替换成服务器地址)",
+                    "type": "string"
+                },
+                "perms": {
+                    "description": "授权(多个用逗号分隔，如：sysmodel:user:add,sysmodel:user:edit)",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "类型   0：目录   1：菜单   2：按钮",
+                    "type": "integer"
+                }
+            }
+        },
+        "types.AddMenuResp": {
+            "type": "object",
+            "required": [
+                "code",
+                "message"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "types.AddRoleReq": {
+            "type": "object",
+            "required": [
+                "name",
+                "remark"
+            ],
+            "properties": {
+                "name": {
+                    "description": "角色名称",
+                    "type": "string"
+                },
+                "remark": {
+                    "description": "备注",
+                    "type": "string"
+                }
+            }
+        },
+        "types.AddRoleResp": {
+            "type": "object",
+            "required": [
+                "code",
+                "message"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
         "types.AddUserReq": {
             "type": "object",
             "required": [
@@ -337,6 +685,58 @@
             }
         },
         "types.AddUserResp": {
+            "type": "object",
+            "required": [
+                "code",
+                "message"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "types.DeleteMenuReq": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "types.DeleteMenuResp": {
+            "type": "object",
+            "required": [
+                "code",
+                "message"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "types.DeleteRoleReq": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "types.DeleteRoleResp": {
             "type": "object",
             "required": [
                 "code",
@@ -479,6 +879,96 @@
                 }
             }
         },
+        "types.ListRoleData": {
+            "type": "object",
+            "required": [
+                "createBy",
+                "createTime",
+                "delFlag",
+                "id",
+                "lastUpdateBy",
+                "lastUpdateTime",
+                "name",
+                "remark",
+                "status"
+            ],
+            "properties": {
+                "createBy": {
+                    "description": "创建人",
+                    "type": "string"
+                },
+                "createTime": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "delFlag": {
+                    "description": "是否删除  -1：已删除  0：正常",
+                    "type": "integer"
+                },
+                "id": {
+                    "description": "编号",
+                    "type": "integer"
+                },
+                "lastUpdateBy": {
+                    "description": "更新人",
+                    "type": "string"
+                },
+                "lastUpdateTime": {
+                    "description": "更新时间",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "角色名称",
+                    "type": "string"
+                },
+                "remark": {
+                    "description": "备注",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "状态",
+                    "type": "integer"
+                }
+            }
+        },
+        "types.ListRoleResp": {
+            "type": "object",
+            "required": [
+                "code",
+                "current",
+                "data",
+                "message",
+                "pageSize",
+                "success",
+                "total"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "current": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/types.ListRoleData"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "pageSize": {
+                    "type": "integer"
+                },
+                "success": {
+                    "type": "boolean"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
         "types.ListUserData": {
             "type": "object",
             "required": [
@@ -591,6 +1081,114 @@
                 },
                 "total": {
                     "type": "integer"
+                }
+            }
+        },
+        "types.UpdateMenuReq": {
+            "type": "object",
+            "required": [
+                "icon",
+                "id",
+                "name",
+                "orderNum",
+                "parentId",
+                "path",
+                "perms",
+                "status",
+                "type"
+            ],
+            "properties": {
+                "icon": {
+                    "description": "菜单图标",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "编号",
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "菜单名称",
+                    "type": "string"
+                },
+                "orderNum": {
+                    "description": "排序",
+                    "type": "integer"
+                },
+                "parentId": {
+                    "description": "父菜单ID，一级菜单为0",
+                    "type": "integer"
+                },
+                "path": {
+                    "description": "菜单URL,类型：1.普通页面（如用户管理， /sysmodel/user） 2.嵌套完整外部页面，以http(s)开头的链接 3.嵌套服务器页面，使用iframe:前缀+目标URL(如SQL监控， iframe:/druid/login.html, iframe:前缀会替换成服务器地址)",
+                    "type": "string"
+                },
+                "perms": {
+                    "description": "授权(多个用逗号分隔，如：sysmodel:user:add,sysmodel:user:edit)",
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "type": {
+                    "description": "类型   0：目录   1：菜单   2：按钮",
+                    "type": "integer"
+                }
+            }
+        },
+        "types.UpdateMenuResp": {
+            "type": "object",
+            "required": [
+                "code",
+                "message"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "types.UpdateRoleReq": {
+            "type": "object",
+            "required": [
+                "id",
+                "name",
+                "remark",
+                "status"
+            ],
+            "properties": {
+                "id": {
+                    "description": "编号",
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "角色名称",
+                    "type": "string"
+                },
+                "remark": {
+                    "description": "备注",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "状态",
+                    "type": "integer"
+                }
+            }
+        },
+        "types.UpdateRoleResp": {
+            "type": "object",
+            "required": [
+                "code",
+                "message"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
                 }
             }
         },

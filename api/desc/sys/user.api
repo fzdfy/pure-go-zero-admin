@@ -79,7 +79,7 @@ type (
         Mobile string `json:"mobile"`
         Name string `json:"name"`
         NickName string `json:"nickName"`
-        status int64 `json:"status"`
+        Status int64 `json:"status"`
     }
     UpdateUserResp struct {
         Code string `json:"code"`

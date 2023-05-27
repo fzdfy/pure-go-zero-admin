@@ -47,10 +47,6 @@ message UserAddReq {
   int64 job_id = 9;
 }
 
-message UserAddResp {
-  string pong = 1;
-}
-
 message UserListReq {
   int64 current = 1;
   int64 pageSize = 2;
@@ -95,10 +91,69 @@ message UserUpdateReq {
 
 message UserDeleteReq {
   int64 id = 1;
-  string last_update_by = 6;
+  string last_update_by = 2;
 }
 
 //user end---------------------
+
+
+//role start---------------------
+message RoleAddReq {
+  string name = 1;
+  string remark = 2;
+  string create_by = 3;
+}
+
+message RoleListReq {
+  int64 current = 1;
+  int64 pageSize = 2;
+  string name = 3;
+  int64 status = 4;
+}
+
+message RoleListData {
+  int64 id = 1;
+  string name = 2;
+  string remark = 3;
+  string create_by = 4;
+  string create_time = 5;
+  string last_update_by = 6;
+  string last_update_time = 7;
+  int64 del_flag = 8;
+  int64 status = 9;
+}
+
+message RoleListResp {
+  int64 total = 1;
+  repeated  RoleListData list = 2;
+}
+
+message RoleUpdateReq {
+  int64 id = 1;
+  string name = 2;
+  string remark = 3;
+  string last_update_by = 4;
+  int64 status = 5;
+}
+
+message RoleDeleteReq {
+  int64 id = 1;
+  string last_update_by = 2;
+}
+
+message UpdateRoleRoleReq {
+  string id = 1;
+}
+
+message QueryMenuByRoleIdReq {
+  int64 id = 1;
+}
+
+message QueryMenuByRoleIdResp {
+  repeated int64 ids = 1;
+}
+
+//role end---------------------
 
 //menu start---------------------
 message MenuAddReq {
@@ -112,13 +167,12 @@ message MenuAddReq {
   string create_by = 8;
 }
 
-message MenuAddResp {
-  string pong = 1;
-}
-
 message MenuListReq {
-  string name = 1;
-  string path = 2;
+  int64 current = 1;
+  int64 pageSize = 2;
+  string name = 3;
+  string path = 4;
+  int64 status = 5;
 }
 
 message MenuListData {
@@ -135,6 +189,7 @@ message MenuListData {
   string last_update_by = 11;
   string last_update_time = 12;
   int64 del_flag = 13;
+  int64 status = 14;
 }
 
 message MenuListTree {
@@ -160,18 +215,12 @@ message MenuUpdateReq {
   string icon = 7;
   int64 order_num = 8;
   string last_update_by = 9;
-}
-
-message MenuUpdateResp {
-  string pong = 1;
+  int64 status = 10;
 }
 
 message MenuDeleteReq {
   int64 id = 1;
-}
-
-message MenuDeleteResp {
-  string pong = 1;
+  string last_update_by = 2;
 }
 
 message UpdateMenuRoleReq {
@@ -187,13 +236,21 @@ message UpdateMenuRoleResp {
 service Sys {
   rpc UserLogin(UserLoginReq) returns(UserLoginResp);
   rpc UserInfo(UserInfoReq) returns(UserInfoResp);
-  rpc UserAdd(UserAddReq) returns(UserAddResp);
+  rpc UserAdd(UserAddReq) returns(BaseResp);
   rpc UserList(UserListReq) returns(UserListResp);
   rpc UserUpdate(UserUpdateReq) returns(BaseResp);
   rpc UserDelete(UserDeleteReq) returns(BaseResp);
 
-  rpc MenuAdd(MenuAddReq) returns(MenuAddResp);
+  rpc MenuAdd(MenuAddReq) returns(BaseResp);
   rpc MenuList(MenuListReq) returns(MenuListResp);
-  rpc MenuUpdate(MenuUpdateReq) returns(MenuUpdateResp);
-  rpc MenuDelete(MenuDeleteReq) returns(MenuDeleteResp);
+  rpc MenuUpdate(MenuUpdateReq) returns(BaseResp);
+  rpc MenuDelete(MenuDeleteReq) returns(BaseResp);
+
+  rpc RoleAdd(RoleAddReq) returns(BaseResp);
+  rpc RoleList(RoleListReq) returns(RoleListResp);
+  rpc RoleUpdate(RoleUpdateReq) returns(BaseResp);
+  rpc RoleDelete(RoleDeleteReq) returns(BaseResp);
+//  rpc UpdateRoleRole(UpdateRoleRoleReq) returns(UpdateRoleRoleResp);
+//  rpc QueryMenuByRoleId(QueryMenuByRoleIdReq) returns(QueryMenuByRoleIdResp);
+//  rpc UpdateMenuRole(UpdateMenuRoleReq) returns(UpdateMenuRoleResp);
 }

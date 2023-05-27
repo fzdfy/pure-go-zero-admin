@@ -11,25 +11,27 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type MenuDeleteLogic struct {
+type RoleUpdateLogic struct {
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 	logx.Logger
 }
 
-func NewMenuDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *MenuDeleteLogic {
-	return &MenuDeleteLogic{
+func NewRoleUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *RoleUpdateLogic {
+	return &RoleUpdateLogic{
 		ctx:    ctx,
 		svcCtx: svcCtx,
 		Logger: logx.WithContext(ctx),
 	}
 }
 
-func (l *MenuDeleteLogic) MenuDelete(in *sys.MenuDeleteReq) (*sys.BaseResp, error) {
-	err := l.svcCtx.MenuModel.DeleteMenu(l.ctx, &sysmodel.SysMenu{
+func (l *RoleUpdateLogic) RoleUpdate(in *sys.RoleUpdateReq) (*sys.BaseResp, error) {
+	err := l.svcCtx.RoleModel.Update(l.ctx, &sysmodel.SysRole{
 		Id:             in.Id,
-		DelFlag:        -1,
+		Name:           in.Name,
+		Remark:         in.Remark,
 		LastUpdateBy:   in.LastUpdateBy,
+		Status:         in.Status,
 		LastUpdateTime: time.Now(),
 	})
 

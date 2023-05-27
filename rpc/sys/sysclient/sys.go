@@ -13,42 +13,51 @@ import (
 )
 
 type (
-	BaseResp           = sys.BaseResp
-	MenuAddReq         = sys.MenuAddReq
-	MenuAddResp        = sys.MenuAddResp
-	MenuDeleteReq      = sys.MenuDeleteReq
-	MenuDeleteResp     = sys.MenuDeleteResp
-	MenuListData       = sys.MenuListData
-	MenuListReq        = sys.MenuListReq
-	MenuListResp       = sys.MenuListResp
-	MenuListTree       = sys.MenuListTree
-	MenuUpdateReq      = sys.MenuUpdateReq
-	MenuUpdateResp     = sys.MenuUpdateResp
-	UpdateMenuRoleReq  = sys.UpdateMenuRoleReq
-	UpdateMenuRoleResp = sys.UpdateMenuRoleResp
-	UserAddReq         = sys.UserAddReq
-	UserAddResp        = sys.UserAddResp
-	UserDeleteReq      = sys.UserDeleteReq
-	UserInfoReq        = sys.UserInfoReq
-	UserInfoResp       = sys.UserInfoResp
-	UserListData       = sys.UserListData
-	UserListReq        = sys.UserListReq
-	UserListResp       = sys.UserListResp
-	UserLoginReq       = sys.UserLoginReq
-	UserLoginResp      = sys.UserLoginResp
-	UserUpdateReq      = sys.UserUpdateReq
+	BaseResp              = sys.BaseResp
+	MenuAddReq            = sys.MenuAddReq
+	MenuDeleteReq         = sys.MenuDeleteReq
+	MenuListData          = sys.MenuListData
+	MenuListReq           = sys.MenuListReq
+	MenuListResp          = sys.MenuListResp
+	MenuListTree          = sys.MenuListTree
+	MenuUpdateReq         = sys.MenuUpdateReq
+	QueryMenuByRoleIdReq  = sys.QueryMenuByRoleIdReq
+	QueryMenuByRoleIdResp = sys.QueryMenuByRoleIdResp
+	RoleAddReq            = sys.RoleAddReq
+	RoleDeleteReq         = sys.RoleDeleteReq
+	RoleListData          = sys.RoleListData
+	RoleListReq           = sys.RoleListReq
+	RoleListResp          = sys.RoleListResp
+	RoleUpdateReq         = sys.RoleUpdateReq
+	UpdateMenuRoleReq     = sys.UpdateMenuRoleReq
+	UpdateMenuRoleResp    = sys.UpdateMenuRoleResp
+	UpdateRoleRoleReq     = sys.UpdateRoleRoleReq
+	UserAddReq            = sys.UserAddReq
+	UserDeleteReq         = sys.UserDeleteReq
+	UserInfoReq           = sys.UserInfoReq
+	UserInfoResp          = sys.UserInfoResp
+	UserListData          = sys.UserListData
+	UserListReq           = sys.UserListReq
+	UserListResp          = sys.UserListResp
+	UserLoginReq          = sys.UserLoginReq
+	UserLoginResp         = sys.UserLoginResp
+	UserUpdateReq         = sys.UserUpdateReq
 
 	Sys interface {
 		UserLogin(ctx context.Context, in *UserLoginReq, opts ...grpc.CallOption) (*UserLoginResp, error)
 		UserInfo(ctx context.Context, in *UserInfoReq, opts ...grpc.CallOption) (*UserInfoResp, error)
-		UserAdd(ctx context.Context, in *UserAddReq, opts ...grpc.CallOption) (*UserAddResp, error)
+		UserAdd(ctx context.Context, in *UserAddReq, opts ...grpc.CallOption) (*BaseResp, error)
 		UserList(ctx context.Context, in *UserListReq, opts ...grpc.CallOption) (*UserListResp, error)
 		UserUpdate(ctx context.Context, in *UserUpdateReq, opts ...grpc.CallOption) (*BaseResp, error)
 		UserDelete(ctx context.Context, in *UserDeleteReq, opts ...grpc.CallOption) (*BaseResp, error)
-		MenuAdd(ctx context.Context, in *MenuAddReq, opts ...grpc.CallOption) (*MenuAddResp, error)
+		MenuAdd(ctx context.Context, in *MenuAddReq, opts ...grpc.CallOption) (*BaseResp, error)
 		MenuList(ctx context.Context, in *MenuListReq, opts ...grpc.CallOption) (*MenuListResp, error)
-		MenuUpdate(ctx context.Context, in *MenuUpdateReq, opts ...grpc.CallOption) (*MenuUpdateResp, error)
-		MenuDelete(ctx context.Context, in *MenuDeleteReq, opts ...grpc.CallOption) (*MenuDeleteResp, error)
+		MenuUpdate(ctx context.Context, in *MenuUpdateReq, opts ...grpc.CallOption) (*BaseResp, error)
+		MenuDelete(ctx context.Context, in *MenuDeleteReq, opts ...grpc.CallOption) (*BaseResp, error)
+		RoleAdd(ctx context.Context, in *RoleAddReq, opts ...grpc.CallOption) (*BaseResp, error)
+		RoleList(ctx context.Context, in *RoleListReq, opts ...grpc.CallOption) (*RoleListResp, error)
+		RoleUpdate(ctx context.Context, in *RoleUpdateReq, opts ...grpc.CallOption) (*BaseResp, error)
+		RoleDelete(ctx context.Context, in *RoleDeleteReq, opts ...grpc.CallOption) (*BaseResp, error)
 	}
 
 	defaultSys struct {
@@ -72,7 +81,7 @@ func (m *defaultSys) UserInfo(ctx context.Context, in *UserInfoReq, opts ...grpc
 	return client.UserInfo(ctx, in, opts...)
 }
 
-func (m *defaultSys) UserAdd(ctx context.Context, in *UserAddReq, opts ...grpc.CallOption) (*UserAddResp, error) {
+func (m *defaultSys) UserAdd(ctx context.Context, in *UserAddReq, opts ...grpc.CallOption) (*BaseResp, error) {
 	client := sys.NewSysClient(m.cli.Conn())
 	return client.UserAdd(ctx, in, opts...)
 }
@@ -92,7 +101,7 @@ func (m *defaultSys) UserDelete(ctx context.Context, in *UserDeleteReq, opts ...
 	return client.UserDelete(ctx, in, opts...)
 }
 
-func (m *defaultSys) MenuAdd(ctx context.Context, in *MenuAddReq, opts ...grpc.CallOption) (*MenuAddResp, error) {
+func (m *defaultSys) MenuAdd(ctx context.Context, in *MenuAddReq, opts ...grpc.CallOption) (*BaseResp, error) {
 	client := sys.NewSysClient(m.cli.Conn())
 	return client.MenuAdd(ctx, in, opts...)
 }
@@ -102,12 +111,32 @@ func (m *defaultSys) MenuList(ctx context.Context, in *MenuListReq, opts ...grpc
 	return client.MenuList(ctx, in, opts...)
 }
 
-func (m *defaultSys) MenuUpdate(ctx context.Context, in *MenuUpdateReq, opts ...grpc.CallOption) (*MenuUpdateResp, error) {
+func (m *defaultSys) MenuUpdate(ctx context.Context, in *MenuUpdateReq, opts ...grpc.CallOption) (*BaseResp, error) {
 	client := sys.NewSysClient(m.cli.Conn())
 	return client.MenuUpdate(ctx, in, opts...)
 }
 
-func (m *defaultSys) MenuDelete(ctx context.Context, in *MenuDeleteReq, opts ...grpc.CallOption) (*MenuDeleteResp, error) {
+func (m *defaultSys) MenuDelete(ctx context.Context, in *MenuDeleteReq, opts ...grpc.CallOption) (*BaseResp, error) {
 	client := sys.NewSysClient(m.cli.Conn())
 	return client.MenuDelete(ctx, in, opts...)
+}
+
+func (m *defaultSys) RoleAdd(ctx context.Context, in *RoleAddReq, opts ...grpc.CallOption) (*BaseResp, error) {
+	client := sys.NewSysClient(m.cli.Conn())
+	return client.RoleAdd(ctx, in, opts...)
+}
+
+func (m *defaultSys) RoleList(ctx context.Context, in *RoleListReq, opts ...grpc.CallOption) (*RoleListResp, error) {
+	client := sys.NewSysClient(m.cli.Conn())
+	return client.RoleList(ctx, in, opts...)
+}
+
+func (m *defaultSys) RoleUpdate(ctx context.Context, in *RoleUpdateReq, opts ...grpc.CallOption) (*BaseResp, error) {
+	client := sys.NewSysClient(m.cli.Conn())
+	return client.RoleUpdate(ctx, in, opts...)
+}
+
+func (m *defaultSys) RoleDelete(ctx context.Context, in *RoleDeleteReq, opts ...grpc.CallOption) (*BaseResp, error) {
+	client := sys.NewSysClient(m.cli.Conn())
+	return client.RoleDelete(ctx, in, opts...)
 }

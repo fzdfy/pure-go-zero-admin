@@ -1,0 +1,81 @@
+syntax = "v1"
+
+info(
+    desc: "角色"
+    author: "yunpeng.feng"
+    email: "yunpeng@mycredigo.com"
+)
+
+type (
+    AddRoleReq struct {
+        Name string `json:"name"`                                  // 角色名称
+        Remark string `json:"remark"`                              // 备注
+    }
+    AddRoleResp struct {
+        Code string `json:"code"`
+        Message string `json:"message"`
+    }
+    ListRoleReq struct {
+        Current int64 `form:"current,default=1"`
+        PageSize int64 `form:"pageSize,default=20"`
+        Name string `form:"name,optional "`
+        Status int64 `form:"status,optional,default=-1"`
+    }
+    ListRoleData struct {
+        Id int64 `json:"id"`                                // 编号
+        Name string `json:"name"`                           // 角色名称
+        Remark string `json:"remark"`                       // 备注
+        CreateBy string `json:"createBy"`                   // 创建人
+        CreateTime string `json:"createTime"`               // 创建时间
+        LastUpdateBy string `json:"lastUpdateBy"`           // 更新人
+        LastUpdateTime string `json:"lastUpdateTime"`       // 更新时间
+        DelFlag int64 `json:"delFlag"`                      // 是否删除  -1：已删除  0：正常
+        Status int64 `json:"status"`                        // 状态
+    }
+    ListRoleResp struct {
+        Code string `json:"code"`
+        Message string `json:"message"`
+        Current int64 `json:"current,default=1"`
+        Data []*ListRoleData `json:"data"`
+        PageSize int64 `json:"pageSize,default=20"`
+        Success bool `json:"success"`
+        Total int64 `json:"total"`
+    }
+    UpdateRoleReq struct {
+        Id int64 `json:"id"`                               // 编号
+        Name string `json:"name"`                          // 角色名称
+        Remark string `json:"remark"`                      // 备注
+        Status int64 `json:"status"`                       // 状态
+    }
+    UpdateRoleResp struct {
+        Code string `json:"code"`
+        Message string `json:"message"`
+    }
+    DeleteRoleReq struct {
+        Id int64 `json:"id"`
+    }
+    DeleteRoleResp struct {
+        Code string `json:"code"`
+        Message string `json:"message"`
+    }
+)
+
+@server(
+    jwt: Auth
+    middleware: CheckUrl
+    group: sys/role
+    prefix: /api/sys/role
+)
+service admin-api {
+    @handler RoleAdd
+    post /add (AddRoleReq) returns (AddRoleResp)
+
+    @handler RoleList
+    get /list (ListRoleReq) returns (ListRoleResp)
+
+    @handler RoleUpdate
+    post /update (UpdateRoleReq) returns (UpdateRoleResp)
+
+    @handler RoleDelete
+    post /delete (DeleteRoleReq) returns (DeleteRoleResp)
+}

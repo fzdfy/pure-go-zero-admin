@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/zeromicro/go-zero/core/logx"
+	"pure-go-zero-admin/rpc/model/sysmodel"
 	"pure-go-zero-admin/rpc/sys/internal/svc"
 	"pure-go-zero-admin/rpc/sys/sys"
 )
@@ -24,14 +25,21 @@ func NewMenuListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *MenuList
 }
 
 func (l *MenuListLogic) MenuList(in *sys.MenuListReq) (*sys.MenuListResp, error) {
-	count, _ := l.svcCtx.MenuModel.Count(l.ctx)
-	all, err := l.svcCtx.MenuModel.FindAll(l.ctx, 1, count)
+	query := sysmodel.SysMenu{
+		Name:   in.Name,
+		Path:   in.Path,
+		Status: in.Status,
+	}
+
+	all, err := l.svcCtx.MenuModel.FindAll(l.ctx, &query, in.Current, in.PageSize)
 
 	if err != nil {
 		reqStr, _ := json.Marshal(in)
 		logx.WithContext(l.ctx).Errorf("查询菜单列表信息失败,参数:%s,异常:%s", reqStr, err.Error())
 		return nil, err
 	}
+
+	count, _ := l.svcCtx.MenuModel.Count(l.ctx, &query)
 
 	var list []*sys.MenuListData
 	for _, menu := range *all {

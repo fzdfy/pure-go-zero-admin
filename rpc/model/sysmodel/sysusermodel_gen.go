@@ -28,8 +28,8 @@ type (
 		Insert(ctx context.Context, data *SysUser) (sql.Result, error)
 		FindOne(ctx context.Context, id int64) (*SysUser, error)
 		FindOneByName(ctx context.Context, name string) (*SysUser, error)
-		FindAll(ctx context.Context, sysUserquery *SysUserQuery, Current int64, PageSize int64) (*[]SysUserList, error)
-		Count(ctx context.Context, sysUserQuery *SysUserQuery) (int64, error)
+		FindAll(ctx context.Context, data *SysUser, Current int64, PageSize int64) (*[]SysUserList, error)
+		Count(ctx context.Context, data *SysUser) (int64, error)
 		Update(ctx context.Context, data *SysUser) error
 		Delete(ctx context.Context, id int64) error
 		DeleteUser(ctx context.Context, data *SysUser ) error
@@ -57,14 +57,6 @@ type (
 		LastUpdateTime time.Time `db:"last_update_time"` // 更新时间
 		DelFlag        int64     `db:"del_flag"`         // 是否删除  -1：已删除  0：正常
 		JobId          int64     `db:"job_id"`           // 岗位Id
-	}
-
-	SysUserQuery struct {
-		Name     string `db:"name"`      // 用户名
-		NickName string `db:"nick_name"` // 昵称
-		Email    string `db:"email"`     // 邮箱
-		Mobile   string `db:"mobile"`    // 手机号
-		Status   int64  `db:"status"`    // 状态  0：禁用   1：正常
 	}
 
 	SysUserList struct {
@@ -133,23 +125,23 @@ func (m *defaultSysUserModel) FindOneByName(ctx context.Context, name string) (*
 	}
 }
 
-func (m *defaultSysUserModel) FindAll(ctx context.Context, sysUserQuery *SysUserQuery, Current int64, PageSize int64) (*[]SysUserList, error) {
+func (m *defaultSysUserModel) FindAll(ctx context.Context, data *SysUser, Current int64, PageSize int64) (*[]SysUserList, error) {
 
 	search := ""
-	if len(sysUserQuery.Name) > 0 {
-		search += fmt.Sprintf(" and `name` LIKE '%s'", "%"+sysUserQuery.Name+"%")
+	if len(data.Name) > 0 {
+		search += fmt.Sprintf(" and `name` LIKE '%s'", "%"+data.Name+"%")
 	}
-	if len(sysUserQuery.NickName) > 0 {
-		search += fmt.Sprintf(" and `nick_name` LIKE '%s'", "%"+sysUserQuery.NickName+"%")
+	if len(data.NickName) > 0 {
+		search += fmt.Sprintf(" and `nick_name` LIKE '%s'", "%"+data.NickName+"%")
 	}
-	if len(sysUserQuery.Email) > 0 {
-		search += fmt.Sprintf(" and `email` LIKE '%s'", "%"+sysUserQuery.Email+"%")
+	if len(data.Email) > 0 {
+		search += fmt.Sprintf(" and `email` LIKE '%s'", "%"+data.Email+"%")
 	}
-	if len(sysUserQuery.Mobile) > 0 {
-		search += fmt.Sprintf(" and `mobile` LIKE '%s'", "%"+sysUserQuery.Mobile+"%")
+	if len(data.Mobile) > 0 {
+		search += fmt.Sprintf(" and `mobile` LIKE '%s'", "%"+data.Mobile+"%")
 	}
-	if enumx.CheckValueInUserStatusEnum(sysUserQuery.Status) {
-		search += fmt.Sprintf(" and `status` = %d", sysUserQuery.Status)
+	if enumx.CheckValueInUserStatusEnum(data.Status) {
+		search += fmt.Sprintf(" and `status` = %d", data.Status)
 	}
 
 	query := fmt.Sprintf("select %s from %s where `del_flag` = 0 %s limit ?,?", sysUserRows, m.table, search)
@@ -166,22 +158,22 @@ func (m *defaultSysUserModel) FindAll(ctx context.Context, sysUserQuery *SysUser
 	}
 }
 
-func (m *defaultSysUserModel) Count(ctx context.Context, sysUserQuery *SysUserQuery) (int64, error) {
+func (m *defaultSysUserModel) Count(ctx context.Context, data *SysUser) (int64, error) {
 	search := ""
-	if len(sysUserQuery.Name) > 0 {
-		search += fmt.Sprintf(" and `name` LIKE '%s'", "%"+sysUserQuery.Name+"%")
+	if len(data.Name) > 0 {
+		search += fmt.Sprintf(" and `name` LIKE '%s'", "%"+data.Name+"%")
 	}
-	if len(sysUserQuery.NickName) > 0 {
-		search += fmt.Sprintf(" and `nick_name` LIKE '%s'", "%"+sysUserQuery.NickName+"%")
+	if len(data.NickName) > 0 {
+		search += fmt.Sprintf(" and `nick_name` LIKE '%s'", "%"+data.NickName+"%")
 	}
-	if len(sysUserQuery.Email) > 0 {
-		search += fmt.Sprintf(" and `email` LIKE '%s'", "%"+sysUserQuery.Email+"%")
+	if len(data.Email) > 0 {
+		search += fmt.Sprintf(" and `email` LIKE '%s'", "%"+data.Email+"%")
 	}
-	if len(sysUserQuery.Mobile) > 0 {
-		search += fmt.Sprintf(" and `mobile` LIKE '%s'", "%"+sysUserQuery.Mobile+"%")
+	if len(data.Mobile) > 0 {
+		search += fmt.Sprintf(" and `mobile` LIKE '%s'", "%"+data.Mobile+"%")
 	}
-	if enumx.CheckValueInUserStatusEnum(sysUserQuery.Status) {
-		search += fmt.Sprintf(" and `status` = %d", sysUserQuery.Status)
+	if enumx.CheckValueInUserStatusEnum(data.Status) {
+		search += fmt.Sprintf(" and `status` = %d", data.Status)
 	}
 
 	query := fmt.Sprintf("select count(*) as count from %s where `del_flag` = 0 %s", m.table, search)

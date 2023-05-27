@@ -3,6 +3,7 @@ package logic
 import (
 	"context"
 	"encoding/json"
+	"github.com/jinzhu/copier"
 	"github.com/zeromicro/go-zero/core/logx"
 	"pure-go-zero-admin/api/internal/common/errorx"
 	"pure-go-zero-admin/api/internal/svc"
@@ -35,13 +36,13 @@ func NewMenuListLogic(ctx context.Context, svcCtx *svc.ServiceContext) MenuListL
 //	@Produce		json
 //	@Param			name	query		string	false	"List Menu"
 //	@Param			path	query		string	false	"List Menu"
+//	@Param			status		query	int64	false	"List Menu"
 //	@Success		200		{object}	types.ListMenuResp
 //	@Router			/api/sys/menu/list [get]
 func (l *MenuListLogic) MenuList(req types.ListMenuReq) (*types.ListMenuResp, error) {
-	resp, err := l.svcCtx.Sys.MenuList(l.ctx, &sysclient.MenuListReq{
-		Name: req.Name,
-		Path: req.Path,
-	})
+	menuListReq := sysclient.MenuListReq{}
+	_ = copier.Copy(&menuListReq, &req)
+	resp, err := l.svcCtx.Sys.MenuList(l.ctx, &menuListReq)
 
 	if err != nil {
 		data, _ := json.Marshal(req)
@@ -49,7 +50,7 @@ func (l *MenuListLogic) MenuList(req types.ListMenuReq) (*types.ListMenuResp, er
 		return nil, errorx.NewDefaultError("查询菜单失败")
 	}
 
-	var list []*types.ListMenuData
+	var list []*types.ListMenuData = []*types.ListMenuData{}
 
 	for _, menu := range resp.List {
 		list = append(list, &types.ListMenuData{

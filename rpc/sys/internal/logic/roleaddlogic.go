@@ -11,30 +11,25 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type MenuAddLogic struct {
+type RoleAddLogic struct {
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 	logx.Logger
 }
 
-func NewMenuAddLogic(ctx context.Context, svcCtx *svc.ServiceContext) *MenuAddLogic {
-	return &MenuAddLogic{
+func NewRoleAddLogic(ctx context.Context, svcCtx *svc.ServiceContext) *RoleAddLogic {
+	return &RoleAddLogic{
 		ctx:    ctx,
 		svcCtx: svcCtx,
 		Logger: logx.WithContext(ctx),
 	}
 }
 
-func (l *MenuAddLogic) MenuAdd(in *sys.MenuAddReq) (*sys.BaseResp, error) {
-	_, err := l.svcCtx.MenuModel.Insert(l.ctx, &sysmodel.SysMenu{
+func (l *RoleAddLogic) RoleAdd(in *sys.RoleAddReq) (*sys.BaseResp, error) {
+	_, err := l.svcCtx.RoleModel.Insert(l.ctx, &sysmodel.SysRole{
 		Id:             0,
 		Name:           in.Name,
-		ParentId:       in.ParentId,
-		Path:           in.Path,
-		Perms:          in.Perms,
-		Type:           in.Type,
-		Icon:           in.Icon,
-		OrderNum:       in.OrderNum,
+		Remark:         in.Remark,
 		CreateBy:       in.CreateBy,
 		CreateTime:     time.Now(),
 		LastUpdateBy:   in.CreateBy,
